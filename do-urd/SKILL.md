@@ -69,7 +69,7 @@ metadata:
 ## Stage 3 - Implement
 
 - **Luôn đối chứng, không suy đoán.**
-- Từ stage này trở đi, không hỏi/đợi user nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên tài liệu **URD** + repo tài liệu `<repo-root>/../Utop.VietBank.Documents` + codebase + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
+- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên tài liệu **URD** + repo tài liệu `<repo-root>/../Utop.VietBank.Documents` + codebase + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
 - Kiểm tra các công việc độc lập (không sửa trùng file) thì phân cho các subagent.
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho all phase.
@@ -83,7 +83,7 @@ metadata:
 
 - Chạy BE Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--qc`:
-  - **Có** - dừng lại hỏi user có tiếp tục.
+  - **Có** - commit và tạo PR vào nhánh `tasks/quacn`.
   - **Không** - tiếp tục chạy Testing.
 - Chạy FE Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Xong 1 fix phase thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
