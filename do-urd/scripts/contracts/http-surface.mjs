@@ -9,11 +9,22 @@
 //   2. [Route] class-level tắt conventional routing -> httpMethod = null
 //   3. [IntegrationService] -> chỉ nằm ở integration-api/*, proxy generator BỎ QUA
 import { readFileSync } from 'node:fs';
-import { FAIL, PASS, SKIP, addedLines, changedFiles, finding, isNewFile, lineIsExempt, result } from './lib.mjs';
+import { SKIP, addedLines, changedFiles, finding, isNewFile, lineIsExempt, result, verdict } from './lib.mjs';
 
-const APPSERVICE_RE = /services\/.+AppService(\.Extended)?\.cs$/;
+// ⛔ Phải phủ MỌI hậu tố partial, không chỉ `.Extended`. Repo này chia AppService thành nhiều
+//    partial theo miền: `.Extended.cs` · `.Geic.cs` · `.Msg.cs` · `.Cif.cs`… Regex cũ chốt cứng
+//    `.Extended` nên `ContactsAppService.Cif.cs` **lọt hoàn toàn** — cổng báo "0 method mới" trong
+//    khi có 3 endpoint mới, tức im lặng bỏ qua đúng thứ nó sinh ra để canh (gaps.md G-14, 18/08).
+const APPSERVICE_RE = /services\/.+AppService(\.[A-Za-z0-9]+)?\.cs$/;
 // `public [virtual|override|async] Task<...> XxxAsync(` — bắt cả không generic.
-const METHOD_RE = /^\s*public\s+(?:virtual\s+|override\s+|async\s+|static\s+)*Task(?:<[^>]*>)?\s+(\w+)\s*\(/;
+// ⚠ `<.*>` chứ KHÔNG phải `<[^>]*>`: bản cũ dừng ở dấu `>` ĐẦU TIÊN nên **im lặng bỏ sót mọi
+//    generic lồng nhau** — `Task<List<T>>`, `Task<Dictionary<K,V>>`, và nhất là
+//    `Task<PagedResultDto<T>>`, tức dạng endpoint danh sách phổ biến nhất của ABP.
+//    Phát hiện 18/08: C1 đếm 9 method trong khi lượt đó thêm 10; cái thứ 10 trả
+//    `Task<List<ContactRelatedRecordDto>>`. Nghĩa là mọi lượt trước cổng này cũng đã mù với
+//    chúng — cổng XANH mà không phủ hết, đúng thứ `ci-trigger-paths.md` gọi là 'vắng lỗi ≠ đúng'.
+//    `.*` tham lam vẫn an toàn khi tham số có generic: regex quay lui về `>` đúng chỗ.
+const METHOD_RE = /^\s*public\s+(?:virtual\s+|override\s+|async\s+|static\s+)*Task(?:<.*>)?\s+(\w+)\s*\(/;
 
 async function fetchApiDefinition(apiUrl) {
   const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/abp/api-definition`, {
@@ -81,6 +92,7 @@ export async function run({ base, apiUrl }) {
   }
 
   // (b) Method mới trong diff phải xuất hiện, và ở bề mặt api/ chứ không integration-api/.
+  let newMethods = 0;
   for (const file of changedFiles(base, APPSERVICE_RE)) {
     const lines = isNewFile(base, file)
       ? readFileSync(file, 'utf8').split('\n').map((text, i) => ({ line: i + 1, text }))
@@ -91,6 +103,7 @@ export async function run({ base, apiUrl }) {
       if (!m) continue;
       const method = m[1];
       if (lineIsExempt(file, line, 'contract-exempt')) continue;
+      newMethods++;
 
       const hits = byName.get(method) ?? byName.get(method.replace(/Async$/, '')) ?? [];
       if (hits.length === 0) {
@@ -120,5 +133,12 @@ export async function run({ base, apiUrl }) {
     }
   }
 
-  return result(id, title, findings.length ? FAIL : PASS, findings);
+  // Đơn vị đo là endpoint đọc được từ api-definition: nhánh (a) quét TOÀN BỘ, nhánh (b) là tập con
+  // trong diff. `all.length === 0` nghĩa là service trả định nghĩa rỗng — không đo được, không phải đạt.
+  // ⛔ Đơn vị đo là SỐ METHOD MỚI, không phải kích thước api-definition.
+  //    Trước 18/08 chỗ này truyền `all.length` (2413) ⇒ cổng in ✅ "đã kiểm 2413 endpoint" trong khi
+  //    nó kiểm đúng 0 method của lượt đó. PASS mà không chứng minh gì — đúng thứ `verdict()` sinh ra
+  //    để chặn. Đã trả giá thật ở `CTC-FR-03-UC01`: 3 endpoint mới không được cổng nào soi, phải
+  //    kiểm tay trên api-definition mới biết đạt. Xem `gaps.md` G-14.
+  return verdict(id, title, findings, newMethods, `method mới (đối chiếu ${all.length} endpoint sống)`);
 }

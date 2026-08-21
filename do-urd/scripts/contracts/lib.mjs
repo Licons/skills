@@ -17,6 +17,27 @@ export const result = (id, title, status, findings = [], note = '') => ({
   note,
 });
 
+/**
+ * Phán quyết chuẩn cho mọi cổng. **Không cổng nào được tự dựng `result(...)` ở nhánh kết thúc.**
+ *
+ * Luật: `checked === 0` ⇒ **SKIP**, không bao giờ PASS. Cổng không đo được mục nào thì nó không có gì
+ * để nói; báo PASS ở đó là biến một điểm mù thành dấu xanh — và đó là cách một cổng ship ra lỗi trong
+ * khi vẫn xanh.
+ *
+ * `note` luôn kèm số đã kiểm, để phân biệt "kiểm N mục đều đạt" với "chẳng kiểm gì".
+ *
+ * @param unit  danh từ đếm được: 'permission mới', 'method mới', 'property mới trên entity'…
+ * @param skipped  mục TRONG phạm vi nhưng không đo được. Bỏ im lặng là cách một cổng tự thu hẹp
+ *                 phạm vi mà không ai hay ⇒ phải đếm và in ra.
+ */
+export function verdict(id, title, findings, checked, unit, skipped = 0, skippedUnit = unit) {
+  const skipNote = skipped ? ` · ⚠ ${skipped} ${skippedUnit} KHÔNG đo được` : '';
+  if (checked === 0) {
+    return result(id, title, SKIP, findings, `0 ${unit} đo được — cổng không có gì để nói${skipNote}`);
+  }
+  return result(id, title, findings.length ? FAIL : PASS, findings, `đã kiểm ${checked} ${unit}${skipNote}`);
+}
+
 export function git(args, { allowFail = false } = {}) {
   try {
     return execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });

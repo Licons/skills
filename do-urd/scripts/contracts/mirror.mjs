@@ -7,7 +7,7 @@
 // FE chỉ sở hữu NHÃN hiển thị — nhãn thiếu thì hiện chính khoá, để sai còn nhìn thấy được.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { FAIL, PASS, changedFiles, exemptReason, finding, result } from './lib.mjs';
+import { changedFiles, exemptReason, finding, verdict } from './lib.mjs';
 
 const FE_GLOB = 'apps/angular/projects';
 const BE_GLOB = 'services';
@@ -26,7 +26,12 @@ function selfDeclaredMirrors() {
   // CSS/animation nên bắt trần sẽ ra hàng chục dương tính giả.
   return grep(['-rniE', 'mirror|PHẢI khớp|phải khớp|đồng bộ tay', '--include=*.ts', FE_GLOB])
     .filter((l) => !l.includes('/proxy/') && !/\.spec\.ts:/.test(l))
-    .filter((l) => /\bBE\b|\.cs\b|backend/i.test(l));
+    .filter((l) => /\bBE\b|\.cs\b|backend/i.test(l))
+    // Bỏ dòng PHỦ ĐỊNH việc mirror. Bộ lọc trên bắt từ khoá chứ không hiểu nghĩa, nên comment giải
+    // thích "FE KHÔNG mirror enum của BE" khớp y hệt một comment thú nhận "đây là bản sao của BE".
+    // Dương tính giả kiểu này đã xảy ra thật, và đều là câu nói code KHÔNG vi phạm.
+    // Cổng báo sai chỗ thì người đọc học cách bỏ qua nó, và đó là cách một cổng chết đi.
+    .filter((l) => !/\b(không|ko|đừng|no|not|never)\b[^:]{0,40}\bmirror|mirror[^:]{0,20}\b(là sai|bị cấm|is forbidden)/i.test(l));
 }
 
 /** (2) enum khai ở CẢ hai phía cùng tên — bản sao thật, dù không ai khai báo là bản sao. */
@@ -53,6 +58,9 @@ export function run({ base, all = false } = {}) {
   // đỏ vĩnh viễn ⇒ bị bỏ qua, đúng thứ bộ gate này sinh ra để chống.
   const scope = all ? null : new Set(changedFiles(base, /\.ts$/));
   const inScope = (f) => !scope || scope.has(f);
+  // Đơn vị đo của C4 là FILE trong phạm vi, không phải số vi phạm tìm thấy: "quét 12 file, 0 mirror"
+  // là một kết luận; "không có file nào để quét" thì không. Trước đây cả hai in ra y hệt nhau.
+  const filesInScope = scope ? scope.size : -1;
   const seen = new Set();
   const id = 'C4';
   const title = 'FE không chép lại danh sách BE dùng để validate (whitelist / enum)';
@@ -93,5 +101,6 @@ export function run({ base, all = false } = {}) {
     );
   }
 
-  return result(id, title, findings.length ? FAIL : PASS, findings);
+  // `--all` bỏ giới hạn phạm vi nên không đếm được file; dùng 1 để nó không rơi vào nhánh SKIP.
+  return verdict(id, title, findings, filesInScope < 0 ? 1 : filesInScope, 'file .ts trong phạm vi');
 }

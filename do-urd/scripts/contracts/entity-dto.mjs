@@ -4,10 +4,12 @@
 // Không lỗi build, không lỗi test — giá trị tính xong nằm lại DB và màn hình hiện ô trống.
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { FAIL, PASS, addedLines, changedFiles, declLine, exemptReason, finding, isNewFile, result } from './lib.mjs';
+import { addedLines, changedFiles, declLine, exemptReason, finding, isNewFile, verdict } from './lib.mjs';
 
 const ENTITY_RE = /services\/.+\/Entities\/.+\.cs$/;
-const PROP_RE = /^\s*public\s+(?:virtual\s+)?[\w<>,?\[\]\. ]+?\s+(\w+)\s*\{\s*get;/;
+// `static` bị loại: `public static string[] AllTypes { get; } = [...]` là hằng số, không phải cột được
+// map. Bắt nó vào rồi đi tìm DTO tương ứng chỉ sinh ra báo động giả.
+const PROP_RE = /^\s*public\s+(?!static\b)(?:virtual\s+)?[\w<>,?\[\]\. ]+?\s+(\w+)\s*\{\s*get;/;
 
 /** Bỏ qua thứ không bao giờ thuộc về DTO. */
 const NEVER_ON_DTO = new Set(['TenantId', 'ConcurrencyStamp', 'ExtraProperties', 'Id']);
@@ -17,7 +19,10 @@ function dtoFilesFor(entityFile) {
   const m = /^(services\/[^/]+)\/([^/]+)\/Entities\/([^/]+)\//.exec(entityFile);
   if (!m) return [];
   const [, svcRoot, proj, folder] = m;
-  const contracts = `${svcRoot}/${proj}.Contracts/Services/Dtos/${folder}`;
+  // Entity có thể nằm SẴN trong `*.Contracts` (enum/consts dùng chung). Nối thêm `.Contracts` nữa ra
+  // `X.Contracts.Contracts` — đường dẫn không bao giờ tồn tại, nên entity im lặng rơi khỏi phạm vi.
+  const base = proj.endsWith('.Contracts') ? proj : `${proj}.Contracts`;
+  const contracts = `${svcRoot}/${base}/Services/Dtos/${folder}`;
   if (!existsSync(contracts)) return [];
   return readdirSync(contracts)
     .filter((f) => f.endsWith('.cs'))
@@ -29,14 +34,27 @@ export function run({ base }) {
   const title = 'Property mới trên entity có mặt trên DTO (AutoMapper không báo khi thiếu)';
   const findings = [];
 
-  for (const file of changedFiles(base, ENTITY_RE)) {
-    const dtoFiles = dtoFilesFor(file);
-    if (dtoFiles.length === 0) continue; // entity không có thư mục DTO tương ứng — ngoài phạm vi check
+  let checked = 0;
+  let unmeasured = 0;
 
-    const dtoText = dtoFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
+  for (const file of changedFiles(base, ENTITY_RE)) {
     const lines = isNewFile(base, file)
       ? readFileSync(file, 'utf8').split('\n').map((text, i) => ({ line: i + 1, text }))
       : addedLines(base, file);
+
+    const dtoFiles = dtoFilesFor(file);
+    if (dtoFiles.length === 0) {
+      // Entity không tìm thấy thư mục DTO tương ứng. Trước đây `continue` im lặng — quy ước đặt tên
+      // lệch một chữ là đủ để cả entity biến khỏi phạm vi cổng mà báo cáo vẫn xanh.
+      //
+      // Chỉ tính là "không đo được" khi file THẬT SỰ có property ứng viên. File enum/consts không có
+      // property nào thì không có gì để đo — đếm nó vào đây là dựng lên một báo động giả, mà cổng kêu
+      // sai chỗ thì người ta học cách bỏ qua nó.
+      if (lines.some(({ text }) => PROP_RE.test(text))) unmeasured++;
+      continue;
+    }
+
+    const dtoText = dtoFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
 
     const seen = new Set();
     for (const { text } of lines) {
@@ -51,6 +69,7 @@ export function run({ base }) {
       const decl = declLine(file, new RegExp(`\\b${prop}\\s*\\{\\s*get;`));
       if (!decl) continue; // property đã bị xoá khỏi file
       if (exemptReason(`${decl.prev}\n${decl.text}`, 'dto-exempt')) continue;
+      checked++;
 
       // Tìm `PropName {` hoặc `PropName;` trong bất kỳ DTO nào của cùng nhóm.
       const onDto = new RegExp(`\\b${prop}\\s*(\\{\\s*get;|;)`).test(dtoText);
@@ -67,5 +86,5 @@ export function run({ base }) {
     }
   }
 
-  return result(id, title, findings.length ? FAIL : PASS, findings);
+  return verdict(id, title, findings, checked, 'property mới trên entity', unmeasured, 'entity không tìm thấy thư mục DTO');
 }
