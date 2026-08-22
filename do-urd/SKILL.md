@@ -33,7 +33,7 @@ metadata:
 - **Cổng mới phải thử ngược** - phá đúng thứ nó canh ⇒ exit ≠ 0, khôi phục ⇒ exit = 0. Cổng chưa từng đỏ chỉ chứng minh nó chạy.
 - **Chỉ được** start service để test apply migration lên DB `localhost` đang trỏ tới.
 - Agent phải được **yêu cầu đối chiếu** lại số của lead.
-- Monitor từng dòng `workflow` trong skill này để **chắc chắn** chạy đúng **workflow**.
+- Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 
 ---
 
@@ -48,7 +48,7 @@ metadata:
 
 ## Stage 1 - Branch
 
-- `{stamp}` = `yyyyMMdd-HHmm`, `{slug}`= mã UC hoặc mô tả ngắn gọn (ví dụ: `c360-fr-01-uc01`, `c360-batch1-6uc`).
+- `{stamp}` = `yyMMdd-HHmm`, `{slug}`= mã UC hoặc mô tả ngắn gọn (ví dụ: `c360-fr-01-uc01`, `c360-batch1-6uc`).
 - Tạo nhánh `tasks/{stamp}-{slug}` từ nhánh `HEAD`.
 - Tạo `$PLAN_DIR` = `plans/{stamp}-{slug}/`.
 - Tạo file `state.md`, `gaps.md`, `decisions.md` trong `$PLAN_DIR`
@@ -64,7 +64,7 @@ metadata:
 - Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`
 - Quét `$PLAN_DIR` rồi so sánh với codebase + `graphify` rồi **clarify** tất cả với user, lưu lại vào `decisions.md`.
 - **Lặp lại clarify** user cho đến khi không còn thắc mắc.
-- Commit Tiếng Anh `plan(<slug>): <description>`.
+- Xong plan thì commit Tiếng Anh `plan(<slug>): <description>`.
 
 ## Stage 3 - Implement
 
@@ -74,19 +74,21 @@ metadata:
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho all phase.
 - Chạy cook FE cho all phase.
-- Mỗi 1 AC trong 1 UC = 1 unit test BE (group theo phân hệ `#region <module-code> -> #region <ma-uc> <title>`).
-- Mỗi 1 AC trong 1 UC = 1 unit test FE (nếu có) + test case playwright (nếu có - group phân hệ `<module-code> -> <ma-uc>`).
+- Mỗi 1 AC = 1 unit test BE (nếu có - group theo mã phân hệ `#region <module-code> -> #region <ma-uc> <title>`).
+- Mỗi 1 AC = 1 unit test FE (nếu có - group theo mã phân hệ).
+- Mỗi 1 AC = 1 test case playwright (nếu có - group mã phân hệ `<module-code> -> <ma-uc>`).
 - **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/`.
-- Xong 1 phase thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
+- Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 4 - Testing
 
-- Chạy BE Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
+- Chạy BE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
+- Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--qc`:
-  - **Có** - commit và tạo PR vào nhánh `tasks/quacn`.
-  - **Không** - tiếp tục chạy Testing.
-- Chạy FE Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
-- Xong 1 fix phase thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
+  - **Có** - push commit và `az repos pr create --target-branch tasks/quacn` -> sang stage 5.
+  - **Không** - tiếp tục chạy Testing đến hết stage 5.
+- Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
+- Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 5 - Result
 
