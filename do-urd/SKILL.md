@@ -85,7 +85,7 @@ metadata:
 - Chạy BE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--qc`:
-  - **Có** - push commit và `az repos pr create --target-branch tasks/quacn` -> sang stage 5.
+  - **Có** - push commit và sang stage 5.
   - **Không** - tiếp tục chạy Testing đến hết stage 5.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
