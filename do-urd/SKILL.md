@@ -40,7 +40,7 @@ metadata:
 # 2. Môi trường localhost cho Testing
 
 - `appsettings*.json` - **luôn luôn** trỏ về database `localhost`.
-- Chạy `scripts/localhost.sh service <name>` (linux/macos) hoặc `scripts/start-services.ps1` (windows) để chạy những service BE + FE cần test.
+- Chạy `<repo-root>/scripts/localhost.sh service <name>` (linux/macos) hoặc `<repo-root>/scripts/start-services.ps1` (windows) để chạy những service BE + FE cần test.
 
 ---
 
@@ -92,11 +92,20 @@ metadata:
 
 ## Stage 5 - Result
 
-- Chạy script `scripts/localhost.sh stopservices` + `scripts/localhost.sh stop-service angular` để stop các service + frontend.
+- Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend.
 - Liệt kê kết quả test AC nghiệm thu.
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng -> đề xuất phương hướng để giải quyết.
+
+## Stage 6 - Webhook
+
+- Đọc `<repo-root>/.env` lấy mã `WH_TOKEN`.
+- Đọc `<repo-root>/scripts/cursor.txt`, thay `<token>` = `WH_TOKEN`, thay `<session-id>` = session id này, thay `<branch-name>` = tên nhánh working này.
+- Chạy curl với thông số trên.
+- Tạo một Subagent `listen` ngầm chạy `python $HOME/Projects/webhook-agents/watcher.py` để lắng nghe file events.jsonl. Khi có event mới thì phân tích và báo lại cho session.
+- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì giải quyết.
+- Nếu nhận được `"event": "test"` có `session-id` stop subagent `listen`.
 
 ---
 
