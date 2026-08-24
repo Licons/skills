@@ -112,7 +112,7 @@ metadata:
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng không giải quyết được.
-- Liệt kê kết quả test AC nghiệm thu — lấy từ `<repo-root>/apps/angular/e2e-playwright/fixtures/ac-acceptance.md` (báo cáo hợp nhất 3 tầng), KHÔNG liệt kê tay. Nêu số `PASS` / `FAIL` / `CHƯA ĐỦ CHỨNG CỨ`; AC chưa đủ chứng cứ phải nói **thiếu tầng nào**. (`fixtures/ac-report.md` là bản chỉ-e2e do reporter của Playwright ghi — dùng để soi lượt chạy, không phải để ký nghiệm thu.)
+- Liệt kê kết quả test AC nghiệm thu (nếu không có cờ `--qc`) — lấy từ `<repo-root>/apps/angular/e2e-playwright/fixtures/ac-acceptance.md` (báo cáo hợp nhất 3 tầng), KHÔNG liệt kê tay. Nêu số `PASS` / `FAIL` / `CHƯA ĐỦ CHỨNG CỨ`; AC chưa đủ chứng cứ phải nói **thiếu tầng nào**. (`fixtures/ac-report.md` là bản chỉ-e2e do reporter của Playwright ghi — dùng để soi lượt chạy, không phải để ký nghiệm thu.)
 
 ## Stage 6 - Webhook
 
