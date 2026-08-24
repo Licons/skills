@@ -50,18 +50,27 @@ metadata:
 
 - `{stamp}` = `yyMMdd-HHmm`, `{slug}`= mã UC hoặc mô tả ngắn gọn (ví dụ: `c360-fr-01-uc01`, `c360-batch1-6uc`).
 - Tạo nhánh `tasks/{stamp}-{slug}` từ nhánh `HEAD`.
-- Tạo `$PLAN_DIR` = `plans/{stamp}-{slug}/`.
+- Tạo `$PLAN_DIR` = `<repo-root>/plans/{stamp}-{slug}/`.
 - Tạo file `state.md`, `gaps.md`, `decisions.md` trong `$PLAN_DIR`
-- Chạy `scripts/db/use-local-db.sh` (linux/macos) hoặc `scripts/db/use-local-db.ps1` (windows) để thay đổi các setting về `localhost`.
+- Chạy `<repo-root>/scripts/db/use-local-db.sh` (linux/macos) hoặc `<repo-root>/scripts/db/use-local-db.ps1` (windows) để thay đổi các setting về `localhost`.
 
 ## Stage 2 - Plan
 
 - Đọc skill với flag `ak:plan <--urd> <--des> --deep` để chạy plan:
   - Nếu =1 UC thì sinh ra `$UC_DIR` = `$PLAN_DIR`.
-  - Nếu >1 UC thì sinh ra `$UC_DIR` =`plans/{stamp}-{slug}[/<ma-uc>]/`
+  - Nếu >1 UC thì sinh ra `$UC_DIR` =`<repo-root>/plans/{stamp}-{slug}[/<ma-uc>]/`
 - Phase `phase-00-*` là phase khởi tạo dùng chung cho mọi phase (ví dụ migration,...).
 - Copy **nguyên văn UC** vào `$UC_DIR/uc-source.md`
 - Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`
+- **Đăng ký AC vào chỉ mục** `<repo-root>/apps/angular/e2e-playwright/ac-index/<module>/<MÃ-UC>.json` — sinh bằng `node <repo-root>/scripts/e2e/import-ac-index.mjs`, KHÔNG viết tay. Chưa đăng ký = AC vô hình với cổng và báo cáo nghiệm thu.
+- **Khai `requiredLayers` cho từng AC** — tầng nào phải xanh thì AC mới PASS:
+  | `kind` của AC | `requiredLayers` |
+  |---|---|
+  | `Luồng chuẩn` | `["e2e"]` |
+  | `Lỗi/Ngoại lệ` · `Biên` | `["e2e","be"]` |
+  | e2e không dựng được tình huống | `["be"]` + `why` **kiểm được** |
+  - `fe` (Karma) là **tầng thật**: khai vào `requiredLayers` thì nó **LÀ** điều kiện PASS. Không nằm trong mặc định, nhưng AC mà mệnh đề chỉ quan sát được trên giao diện (thứ tự khối · trạng thái rỗng · validate tại chỗ · nhãn/nút bị ẩn) thì **phải** khai `fe` — BE không thấy, e2e chỉ thấy thô.
+  - AC chưa đọc được `kind` ⇒ soi tay rồi khai, KHÔNG mặc định `["e2e"]`.
 - Quét `$PLAN_DIR` rồi so sánh với codebase + `graphify` rồi **clarify** tất cả với user, lưu lại vào `decisions.md`.
 - **Lặp lại clarify** user cho đến khi không còn thắc mắc.
 - Xong plan thì commit Tiếng Anh `plan(<slug>): <description>`.
@@ -74,9 +83,9 @@ metadata:
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho all phase.
 - Chạy cook FE cho all phase.
-- Mỗi 1 AC = 1 unit test BE (nếu có - group theo mã phân hệ `#region <module-code> -> #region <ma-uc> <title>`).
-- Mỗi 1 AC = 1 unit test FE (nếu có - group theo mã phân hệ).
-- Mỗi 1 AC = 1 test case playwright (nếu có - group mã phân hệ `<module-code> -> <ma-uc>`).
+- **Mỗi AC = test ở đủ các tầng nó khai `requiredLayers`** (Stage 2) — không phải 3 tầng cho mọi AC.
+- **Test khoá một AC phải mang mã AC đầy đủ** (`CTC-FR-01-UC04-AC01`, không viết tắt `AC01`): BE `[Trait("AC","<mã>")]` · FE `@case:<mã>` trong title `it()` · e2e tag `@case:<mã>` + `@req:<MÃ-UC>` trên `test.describe`. Tên method BE giữ tiền tố `AC<nn>_`.
+- Ca kiểm **không** truy vết về AC nào của URD (đối chiếu thiết kế, hồi quy) thì **không gắn `@case:`**.
 - **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/`.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
 
@@ -88,24 +97,26 @@ metadata:
   - **Có** - push commit và sang stage 5.
   - **Không** - tiếp tục chạy Testing đến hết stage 5.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
+- **Bật cổng cho UC vừa làm** — thêm mã UC vào `enforcedUcs` của `<repo-root>/apps/angular/e2e-playwright/ac-e2e-scope.json`.
+- Chạy cổng truy vết + sinh báo cáo nghiệm thu, exit ≠ 0 là chặn:
+  ```bash
+  node scripts/e2e/check-ac-e2e-coverage.mjs;   echo "TOOL_EXIT=$?"
+  node scripts/ac/build-acceptance-report.mjs;  echo "TOOL_EXIT=$?"
+  ```
+  AC **PASS chỉ khi mọi tầng nó khai `requiredLayers` đều xanh**; thiếu tầng ⇒ `CHƯA ĐỦ CHỨNG CỨ`.
 - Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 5 - Result
 
 - Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend.
-- Liệt kê kết quả test AC nghiệm thu.
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng không giải quyết được.
+- Liệt kê kết quả test AC nghiệm thu — lấy từ `<repo-root>/apps/angular/e2e-playwright/fixtures/ac-acceptance.md` (báo cáo hợp nhất 3 tầng), KHÔNG liệt kê tay. Nêu số `PASS` / `FAIL` / `CHƯA ĐỦ CHỨNG CỨ`; AC chưa đủ chứng cứ phải nói **thiếu tầng nào**. (`fixtures/ac-report.md` là bản chỉ-e2e do reporter của Playwright ghi — dùng để soi lượt chạy, không phải để ký nghiệm thu.)
 
 ## Stage 6 - Webhook
 
-- Đọc `<repo-root>/.env` lấy mã `WH_TOKEN`.
-- Đọc `<repo-root>/scripts/cursor.txt`, thay `<token>` = `WH_TOKEN`, thay `<session-id>` = session id này, thay `<branch-name>` = tên nhánh working này.
-- Chạy curl với thông số trên.
-- Tạo một Subagent `listen` ngầm chạy `python $HOME/Projects/webhook-agents/watcher.py` để lắng nghe file `$HOME/events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
-- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì giải quyết.
-- Nếu nhận được `"event": "test"` có `session-id` stop subagent `listen`.
+- Đọc và chạy skill `do-test`.
 
 ---
 
