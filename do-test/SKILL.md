@@ -12,8 +12,13 @@ metadata:
 # Workflow
 
 - Đọc `<repo-root>/.env` lấy mã `WH_TOKEN`.
-- Đọc `<repo-root>/scripts/cursor.txt`, thay `<hook-id>` = `WH_ID`, thay `<token>` = `WH_TOKEN`, thay `<session-id>` = session id này, thay `<branch-name>` = tên nhánh working này.
+- Đọc `<repo-root>/scripts/cursor.txt`:
+  - Thay `<hook-id>` = `WH_ID`.
+  - Thay `<token>` = `WH_TOKEN`.
+  - Thay `<description>` = mô tả cho việc chạy test theo working của session này.
+  - Thay `<session-id>` = session id này.
+  - Thay `<branch-name>` = tên nhánh working này.
 - Chạy curl với thông số trên.
-- Tạo một Subagent `listen` ngầm chạy `python $HOME/Projects/webhook-agents/watcher.py` để lắng nghe file `$HOME/events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
-- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì giải quyết.
+- Tạo một Subagent `listen` ngầm chạy `python $HOME/Projects/webhook-agents/watcher.py` để lắng nghe file `events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
+- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì **giải quyết/fix bugs** -> bắn lại webhook theo trên.
 - Nếu nhận được `"event": "test"` có `session-id` stop subagent `listen`.

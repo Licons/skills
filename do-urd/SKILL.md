@@ -63,11 +63,7 @@ metadata:
 - Copy **nguyên văn UC** vào `$UC_DIR/uc-source.md`
 - Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`
 - **Đăng ký AC vào chỉ mục** `<repo-root>/apps/angular/e2e-playwright/ac-index/<module>/<MÃ-UC>.json` — sinh bằng `node <repo-root>/scripts/e2e/import-ac-index.mjs`, KHÔNG viết tay. Chưa đăng ký = AC vô hình với cổng và báo cáo nghiệm thu.
-- ⛔ **Luật nghiệm thu ở `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu — 1 AC = 1 ca Playwright*.**
-  Đọc ở đó, đừng chép lại vào đây: file rule **được git theo dõi**, còn `.claude/skills/do-urd/` bị
-  gitignore ⇒ bản chép ở đây không đi cùng repo và sẽ trôi khỏi bản chính.
-  Tóm tắt để biết mình đang cần gì: 1 AC = ít nhất 1 ca e2e · xUnit/Karma là **tiền đề**, không phải
-  bằng chứng · không dựng được thì khai `blocked` (`by` + `why`) · còn lại là `THIẾU E2E`.
+- ⛔ **Luật nghiệm thu ở `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu — 1 AC = 1 ca Playwright*.** Đọc ở đó, đừng chép lại vào đây: file rule **được git theo dõi**, còn `.claude/skills/do-urd/` bị gitignore ⇒ bản chép ở đây không đi cùng repo và sẽ trôi khỏi bản chính. Tóm tắt để biết mình đang cần gì: 1 AC = ít nhất 1 ca e2e · xUnit/Karma là **tiền đề**, không phải bằng chứng · không dựng được thì khai `blocked` (`by` + `why`) · còn lại là `THIẾU E2E`.
 - Quét `$PLAN_DIR` rồi so sánh với **codebase** + `graphify` rồi **clarify** tất cả với user, lưu lại vào `decisions.md`.
 - **Lặp lại clarify** user cho đến khi không còn thắc mắc.
 - Xong plan thì commit Tiếng Anh `plan(<slug>): <description>`.
@@ -81,9 +77,7 @@ metadata:
 - Chạy cook BE cho all phase.
 - Chạy cook FE cho all phase.
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
-- **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md`
-  §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai
-  là **để đọc**, không phải đường truy vết nghiệm thu.
+- **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
 - **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/`.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
 
