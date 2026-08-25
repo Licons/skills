@@ -63,30 +63,28 @@ metadata:
 - Copy **nguyên văn UC** vào `$UC_DIR/uc-source.md`
 - Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`
 - **Đăng ký AC vào chỉ mục** `<repo-root>/apps/angular/e2e-playwright/ac-index/<module>/<MÃ-UC>.json` — sinh bằng `node <repo-root>/scripts/e2e/import-ac-index.mjs`, KHÔNG viết tay. Chưa đăng ký = AC vô hình với cổng và báo cáo nghiệm thu.
-- **Khai `requiredLayers` cho từng AC** — tầng nào phải xanh thì AC mới PASS:
-  | `kind` của AC | `requiredLayers` |
-  |---|---|
-  | `Luồng chuẩn` | `["e2e"]` |
-  | `Lỗi/Ngoại lệ` · `Biên` | `["e2e","be"]` |
-  | e2e không dựng được tình huống | `["be"]` + `why` **kiểm được** |
-  - `fe` (Karma) là **tầng thật**: khai vào `requiredLayers` thì nó **LÀ** điều kiện PASS. Không nằm trong mặc định, nhưng AC mà mệnh đề chỉ quan sát được trên giao diện (thứ tự khối · trạng thái rỗng · validate tại chỗ · nhãn/nút bị ẩn) thì **phải** khai `fe` — BE không thấy, e2e chỉ thấy thô.
-  - AC chưa đọc được `kind` ⇒ soi tay rồi khai, KHÔNG mặc định `["e2e"]`.
-- Quét `$PLAN_DIR` rồi so sánh với codebase + `graphify` rồi **clarify** tất cả với user, lưu lại vào `decisions.md`.
+- ⛔ **Luật nghiệm thu ở `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu — 1 AC = 1 ca Playwright*.**
+  Đọc ở đó, đừng chép lại vào đây: file rule **được git theo dõi**, còn `.claude/skills/do-urd/` bị
+  gitignore ⇒ bản chép ở đây không đi cùng repo và sẽ trôi khỏi bản chính.
+  Tóm tắt để biết mình đang cần gì: 1 AC = ít nhất 1 ca e2e · xUnit/Karma là **tiền đề**, không phải
+  bằng chứng · không dựng được thì khai `blocked` (`by` + `why`) · còn lại là `THIẾU E2E`.
+- Quét `$PLAN_DIR` rồi so sánh với **codebase** + `graphify` rồi **clarify** tất cả với user, lưu lại vào `decisions.md`.
 - **Lặp lại clarify** user cho đến khi không còn thắc mắc.
 - Xong plan thì commit Tiếng Anh `plan(<slug>): <description>`.
 
 ## Stage 3 - Implement
 
 - **Luôn đối chứng, không suy đoán.**
-- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên tài liệu **URD** + repo tài liệu `<repo-root>/../Utop.VietBank.Documents` + codebase + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
+- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên tài liệu **URD** + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents` + codebase + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
 - Kiểm tra các công việc độc lập (không sửa trùng file) thì phân cho các subagent.
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho all phase.
 - Chạy cook FE cho all phase.
-- **Mỗi AC = test ở đủ các tầng nó khai `requiredLayers`** (Stage 2) — không phải 3 tầng cho mọi AC.
-- **Test khoá một AC phải mang mã AC đầy đủ** (`CTC-FR-01-UC04-AC01`, không viết tắt `AC01`): BE `[Trait("AC","<mã>")]` · FE `@case:<mã>` trong title `it()` · e2e tag `@case:<mã>` + `@req:<MÃ-UC>` trên `test.describe`. Tên method BE giữ tiền tố `AC<nn>_`.
-- Ca kiểm **không** truy vết về AC nào của URD (đối chiếu thiết kế, hồi quy) thì **không gắn `@case:`**.
-- **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/`.
+- **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
+- **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md`
+  §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai
+  là **để đọc**, không phải đường truy vết nghiệm thu.
+- **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/`.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 4 - Testing
@@ -98,12 +96,12 @@ metadata:
   - **Không** - tiếp tục chạy Testing đến hết stage 5.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - **Bật cổng cho UC vừa làm** — thêm mã UC vào `enforcedUcs` của `<repo-root>/apps/angular/e2e-playwright/ac-e2e-scope.json`.
-- Chạy cổng truy vết + sinh báo cáo nghiệm thu, exit ≠ 0 là chặn:
+- Chạy cổng truy vết, exit ≠ 0 là chặn:
   ```bash
   node scripts/e2e/check-ac-e2e-coverage.mjs;   echo "TOOL_EXIT=$?"
-  node scripts/ac/build-acceptance-report.mjs;  echo "TOOL_EXIT=$?"
   ```
-  AC **PASS chỉ khi mọi tầng nó khai `requiredLayers` đều xanh**; thiếu tầng ⇒ `CHƯA ĐỦ CHỨNG CỨ`.
+  Cổng này đọc **tĩnh** (`@case:` trong text spec) ⇒ nó chứng minh AC **có** test, KHÔNG chứng minh test **xanh**. Trạng thái thật chỉ có sau khi chạy suite — xem Stage 5.
+- Báo cáo nghiệm thu do reporter Playwright ghi khi chạy suite: `apps/angular/e2e-playwright/fixtures/ac-report.md` (+ `.html`). Mẫu số là `ac-index/`, nên **mọi** AC có một dòng: `PASS` / `FAIL` / `BLOCKED` (kèm vật cản) / `SKIP` / `THIẾU E2E`.
 - Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 5 - Result
@@ -112,7 +110,9 @@ metadata:
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng không giải quyết được.
-- Liệt kê kết quả test AC nghiệm thu (nếu không có cờ `--qc`) — lấy từ `<repo-root>/apps/angular/e2e-playwright/fixtures/ac-acceptance.md` (báo cáo hợp nhất 3 tầng), KHÔNG liệt kê tay. Nêu số `PASS` / `FAIL` / `CHƯA ĐỦ CHỨNG CỨ`; AC chưa đủ chứng cứ phải nói **thiếu tầng nào**. (`fixtures/ac-report.md` là bản chỉ-e2e do reporter của Playwright ghi — dùng để soi lượt chạy, không phải để ký nghiệm thu.)
+- Liệt kê kết quả test AC nghiệm thu (nếu không có cờ `--qc`) — lấy từ `<repo-root>/apps/angular/e2e-playwright/fixtures/ac-report.md`, **KHÔNG liệt kê tay**. Nêu số `PASS` / `FAIL` / `BLOCKED` / `SKIP` / `THIẾU E2E`; mỗi AC `BLOCKED` phải nói **vật cản là gì** (cột `by`), mỗi `SKIP` phải nói **vì sao lượt này bỏ qua**.
+- ⚠️ `fixtures/ac-report.md` bị `.gitignore` ⇒ artifact **cục bộ, phù du**. Muốn ký nghiệm thu thì dán số vào `$PLAN_DIR` hoặc `plans/reports/`; đừng coi "đã có file" là đã lưu.
+- ⚠️ Một lượt chạy hỏng (globalSetup chết / grep không khớp) **không** ghi đè báo cáo cũ. Đọc số mà không xác nhận lượt chạy vừa xong là đọc số của lượt trước.
 
 ## Stage 6 - Webhook
 
