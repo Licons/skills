@@ -20,5 +20,5 @@ metadata:
   - Thay `<branch-name>` = tên nhánh working này.
 - Chạy curl với thông số trên.
 - Tạo 1 `monitor` để lắng nghe file `$HOME/Projects/events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
-- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì **giải quyết/fix bugs** -> bắn lại webhook như trên.
+- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì đọc xong xóa log -> **giải quyết/fix bugs** -> bắn lại **webhook như trên**.
 - Nếu nhận được `"event": "test"` có `session-id` stop `monitor`.
