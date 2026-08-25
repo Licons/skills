@@ -24,7 +24,7 @@ metadata:
 # 1. Golden rules
 
 - Skill này chỉ dùng cho `<repo-root>` là `Utop.VietBank.CRM`.
-- **Không suy đoán, không giả định, không bịa đặt** - mọi vấn đề dựa vào tài liệu + codebase + `graphify` + clarify hỏi user.
+- **Không suy đoán, không giả định, không bịa đặt** - mọi vấn đề dựa vào `tài liệu URD` + scout `codebase` + `graphify`  + `clarify` user.
 - **URD -> AC luôn đúng** - nếu không đủ dữ liệu -> tìm solution + trade off để giải quyết chúng.
 - **Không** commit các file `appsettings*.json`, `environment*.ts`.
 - **Luôn kiểm chứng** kết quả từ các agent/subagent.
@@ -71,7 +71,7 @@ metadata:
 ## Stage 3 - Implement
 
 - **Luôn đối chứng, không suy đoán.**
-- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên tài liệu **URD** + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents` + codebase + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
+- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents` + scout `codebase` + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
 - Kiểm tra các công việc độc lập (không sửa trùng file) thì phân cho các subagent.
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho all phase.
