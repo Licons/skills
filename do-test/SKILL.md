@@ -19,6 +19,6 @@ metadata:
   - Thay `<session-id>` = session id này.
   - Thay `<branch-name>` = tên nhánh working này.
 - Chạy curl với thông số trên.
-- Tạo một Subagent `listen` ngầm chạy `python $HOME/Projects/webhook-agents/watcher.py` để lắng nghe file `events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
-- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì **giải quyết/fix bugs** -> bắn lại webhook theo trên.
-- Nếu nhận được `"event": "test"` có `session-id` stop subagent `listen`.
+- Tạo 1 `monitor` để lắng nghe file `$HOME/Projects/events.jsonl`. Khi có event mới thì phân tích và báo lại cho session.
+- Nếu nhận được `"event": "fix"` có `session-id` là của mình thì **giải quyết/fix bugs** -> bắn lại webhook như trên.
+- Nếu nhận được `"event": "test"` có `session-id` stop `monitor`.
