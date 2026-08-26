@@ -1,8 +1,10 @@
 #!/bin/bash
 
-SOURCE="$(pwd)/do-urd"
-TEST_SOURCE="$(pwd)/do-test"
-SKILL_PATH="/.claude/skills"
+DO_URD="$(pwd)/do-urd"
+DO_TEST="$(pwd)/do-test"
+VERIFY_E2E="$(pwd)/verify-e2e"
+
+SKILLS="/.claude/skills"
 DESTINATIONS=(
   "../VietBank/Utop.VietBank.CRM"
   "../VietBank/Utop.VietBank.CRM.1"
@@ -10,13 +12,22 @@ DESTINATIONS=(
 )
 
 for DEST in "${DESTINATIONS[@]}"; do
-  echo "Copying $SOURCE -> $DEST$SKILL_PATH"
-  cp -fr "$SOURCE" "$DEST$SKILL_PATH"
+  echo "Copying $DO_URD -> $DEST$SKILLS"
+  cp -fr "$DO_URD" "$DEST$SKILLS"
 done
 
+echo
 for DEST in "${DESTINATIONS[@]}"; do
-  echo "Copying $TEST_SOURCE -> $DEST$SKILL_PATH"
-  cp -fr "$TEST_SOURCE" "$DEST$SKILL_PATH"
+  echo "Copying $DO_TEST -> $DEST$SKILLS"
+  cp -fr "$DO_TEST" "$DEST$SKILLS"
 done
 
+echo
+for DEST in "${DESTINATIONS[@]}"; do
+  echo "Copying $VERIFY_E2E -> $DEST$SKILLS"
+  cp -fr "$VERIFY_E2E" "$DEST$SKILLS"
+done
+
+echo
 echo "Done!"
+
