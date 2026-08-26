@@ -3,7 +3,7 @@ name: do-urd
 description: "Sử dụng để thực hiện các UC trong 1 URD -> test AC nghiệm thu."
 category: workflow
 keywords: [urd, use-case, uc, acceptance-criteria, ac, vietbank, plan, cook, verify]
-argument-hint: "--urd <path.md> [--des <description>] [--qc]"
+argument-hint: "--urd <path.md> [--des <description>] [--no-test]"
 metadata:
   author: utop
   version: "1.0.0"
@@ -85,9 +85,9 @@ metadata:
 
 - Chạy BE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
-- Check cờ `--qc`:
+- Check cờ `--no-test`:
   - **Có** - push commit và sang stage 5.
-  - **Không** - tiếp tục chạy Testing đến hết stage 5.
+  - **Không** - tiếp tục chạy *testing* đến hết workflow.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - **Bật cổng cho UC vừa làm** — thêm mã UC vào `enforcedUcs` của `<repo-root>/apps/angular/e2e-playwright/ac-e2e-scope.json`.
 - Chạy cổng truy vết, exit ≠ 0 là chặn:
