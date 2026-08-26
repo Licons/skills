@@ -1,10 +1,13 @@
 #!/bin/bash
 
-DO_URD="$(pwd)/do-urd"
-DO_TEST="$(pwd)/do-test"
-VERIFY_E2E="$(pwd)/verify-e2e"
+SKILLS_DIR="$(pwd)"
+DEST_SKILLS="/.claude/skills"
+SKILLS=(
+  do-urd
+  do-test
+  verify-e2e
+)
 
-SKILLS="/.claude/skills"
 DESTINATIONS=(
   "../VietBank/Utop.VietBank.CRM"
   "../VietBank/Utop.VietBank.CRM.1"
@@ -12,22 +15,17 @@ DESTINATIONS=(
 )
 
 for DEST in "${DESTINATIONS[@]}"; do
-  echo "Copying $DO_URD -> $DEST$SKILLS"
-  cp -fr "$DO_URD" "$DEST$SKILLS"
-done
-
-echo
-for DEST in "${DESTINATIONS[@]}"; do
-  echo "Copying $DO_TEST -> $DEST$SKILLS"
-  cp -fr "$DO_TEST" "$DEST$SKILLS"
-done
-
-echo
-for DEST in "${DESTINATIONS[@]}"; do
-  echo "Copying $VERIFY_E2E -> $DEST$SKILLS"
-  cp -fr "$VERIFY_E2E" "$DEST$SKILLS"
+  EXCLUDE_FILE="$DEST/.git/info/exclude"
+  for SKILL in "${SKILLS[@]}"; do
+    echo "Copying $SKILLS_DIR/$SKILL -> $DEST$DEST_SKILLS"
+    cp -fr "$SKILLS_DIR/$SKILL" "$DEST$DEST_SKILLS"
+    PATTERN="**/skills/$SKILL"
+    if ! grep -qF "$PATTERN" "$EXCLUDE_FILE" 2>/dev/null; then
+      echo "$PATTERN" >> "$EXCLUDE_FILE"
+      echo "Added $PATTERN to $EXCLUDE_FILE"
+    fi
+  done
 done
 
 echo
 echo "Done!"
-
