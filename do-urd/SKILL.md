@@ -76,6 +76,7 @@ metadata:
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho tất cả các phase có BE.
 - Chạy cook FE cho tất cả các phase có BE.
+- Chạy cook E2E cho tất cả các AC.
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
 - **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
 - **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export`.
@@ -104,10 +105,6 @@ metadata:
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật (ngắn gọn) mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng **không giải quyết được**.
-
-## Stage 6 - Webhook
-
-- Đọc và chạy skill `do-test <description>` (description: mô tả chạy cho UC nào?).
 
 ---
 
