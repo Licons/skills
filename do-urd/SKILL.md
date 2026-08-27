@@ -75,11 +75,10 @@ metadata:
 - Kiểm tra các công việc `cook` độc lập (không sửa trùng file) thì phân cho các subagent (sonnet).
 - Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho tất cả các phase có BE.
-- Chạy cook FE cho tất cả các phase có BE (dựa trên `design layout`).
-- Đọc nội dung AC -> xây dựng các bước thực hiện -> viết spec cho e2e playwright.
+- Chạy cook FE cho tất cả các phase có BE (dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/*`).
+- Đọc nội dung AC -> xây dựng các bước thực hiện (B1, B2,...) để chạy AC -> viết spec cho e2e playwright theo các bước.
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
 - **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
-- **Design Layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/*`.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 4 - Testing
