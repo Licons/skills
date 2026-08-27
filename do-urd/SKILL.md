@@ -103,7 +103,7 @@ metadata:
 - Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend của session này.
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật (ngắn gọn) mà skill cần cải thiện.
-- Liệt kê `gaps.md` còn tồn đọng **không giải quyết được**.
+- Liệt kê `gaps.md` còn tồn đọng **không giải quyết được** - so sánh với `codebase` + `graphify` để tìm `solution`.
 
 ---
 

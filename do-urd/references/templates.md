@@ -73,6 +73,17 @@ Chỉ ghi từ Stage 3 trở đi (Stage 1–2 dùng `decisions.md` vì còn đư
 | # | UC | AC | Stage | Nhóm | Mô tả | Nguồn | Chặn AC | Trạng thái |
 |---|---|---|---|---|---|---|---|---|
 | G-01 | ctc-fr-01-uc02 | ctc-fr-01-uc02-ac01 | cook | plan | Phase 05 cần endpoint export chưa có trong URD | `<URD>:520` | AC-11 | UC BLOCKED |
+
+## G-APR-01 · AP-UC-04-AC-05 — Chế độ xử lý request đang chạy khi Deactivate (CQ-079)
+- **Mã UC**: `AP-UC-04-AC-05` (+ luồng phụ A1 của AP-UC-04).
+- **Dẫn chứng nguyên văn**: *"request đang chạy được xử lý theo tham số 'Chế độ xử lý request đang
+  chạy khi DeKích hoạt' — nhánh A giữ chạy tiếp trên phiên bản cũ (AC-05b) hoặc nhánh B dừng & yêu
+  cầu reTrình (AC-05c), điểm chốt mở CQ-079"*.
+- **Loại**: THIẾU THÔNG TIN (BA chưa chốt CQ-079).
+- **Vì sao**: URD tự khai đây là "điểm chốt mở" — hai nhánh cho hành vi trái ngược nhau, không suy
+  được từ BR nào. Default tạm: nhánh A (D-09, decisions.md) vì không phá trạng thái request đang
+  chạy (khớp GOV-APR-02 "giữ dữ liệu request phiên bản cũ").
+  
 ````
 
 - `Nhóm`: `plan` (thiếu dữ kiện từ URD/plan) · `dev` (subagent fail 2 lần) · `verify` (hết 5 vòng fix).
