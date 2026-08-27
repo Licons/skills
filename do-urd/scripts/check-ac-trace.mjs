@@ -14,7 +14,9 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true }).filter((d) => d.isD
   const f = join(ROOT, dir.name, 'ac-verify.md');
   if (!existsSync(f)) { unmeasurable++; console.log(`⚠ ${dir.name}: thiếu ac-verify.md`); continue; }
   for (const raw of readFileSync(f, 'utf8').split('\n')) {
-    const m = raw.match(/^\|\s*([A-Z0-9]{2,6}-FR-\d+-UC\d+-AC\d+)\s*\|\s*(\d+)\s*\|/);
+    // CHUẨN MÃ AC (đồng bộ extract-ac.mjs + import-urd-ac.mjs, 27/08): mã URD nguyên văn
+    // (kể cả dạng gạch `-UC-NN-AC-NN`) hoặc mã kiến tạo Form A/B (`-UCNN-ACNN`).
+    const m = raw.match(/^\|\s*([A-Z0-9]{2,7}(?:-FR-\d+)?-UC-?\d+-AC-?\d+[a-zA-Z]?)\s*\|\s*(\d+)\s*\|/);
     if (!m) continue;
     const [, code, lineNo] = m;
     const src = urd[Number(lineNo) - 1];
@@ -23,7 +25,16 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true }).filter((d) => d.isD
     // ô thứ 4 của bảng ac-verify = tiêu chí; ô thứ 3 của URD = tiêu chí
     const mine = norm(raw.split(/(?<!\\)\|/)[4] ?? '');
     const theirs = norm(src.split(/(?<!\\)\|/)[3] ?? '');
-    if (!src.includes(code.replace(/-AC\d+$/, ''))) { failed++; console.log(`❌ ${code}: URD:${lineNo} không chứa mã yêu cầu`); continue; }
+    // Dòng URD phải mang mã truy vết được: mã yêu cầu (dạng chuẩn hoặc dạng gạch `-UC-NN`
+    // như URD gốc), HOẶC — nguồn viết AC rút gọn theo mục UC — ô đầu là `AC-NN`/`ACNN`.
+    const req = code.replace(/-AC-?\d+[a-zA-Z]?$/, '');
+    const acNo = code.match(/-AC-?(\d+[a-zA-Z]?)$/)[1];
+    const cell0 = norm(src.split(/(?<!\\)\|/)[1] ?? '').replace(/[`*]/g, '');
+    const traced = src.includes(req)
+      || src.includes(req.replace(/-UC(?=\d)/, '-UC-')) // mã chuẩn ⇒ thử dạng gạch của URD
+      || src.includes(req.replace(/-UC-(?=\d)/, '-UC')) // mã gạch ⇒ thử dạng chuẩn
+      || cell0 === `AC-${acNo}` || cell0 === `AC${acNo}`;
+    if (!traced) { failed++; console.log(`❌ ${code}: URD:${lineNo} không chứa mã yêu cầu/mã AC rút gọn`); continue; }
     if (mine !== theirs) {
       failed++;
       console.log(`❌ ${code} (URD:${lineNo}) LỆCH NGUYÊN VĂN`);

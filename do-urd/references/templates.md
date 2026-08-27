@@ -21,7 +21,7 @@ Cập nhật sau mỗi mốc: setup · hết mỗi stage · mỗi phase · mỗi
 - account admin: đọc file `.env*`
 
 ## UC state
-Cột `UC` = `<ma-uc>` (nguyên mã URD, hạ chữ thường). URD đánh **hai hệ số** ⇒ thêm cột `Số URD` để người đọc còn tìm được mục trong file — số tiêu đề **chỉ sống ở cột này**, không đi vào tên thư mục.
+Cột `UC` = `<ma-uc>` (mã CHUẨN HOÁ — bỏ gạch trước số UC: `AP-UC-01` → `ap-uc01`, `CTC-FR-01-UC06` → `ctc-fr-01-uc06` — hạ chữ thường; xem chuẩn mã AC ở đầu `scripts/extract-ac.mjs`). URD đánh **hai hệ số** ⇒ thêm cột `Số URD` để người đọc còn tìm được mục trong file — số tiêu đề **chỉ sống ở cột này**, không đi vào tên thư mục.
 
 | UC | Số URD | Branch | Stage | Clarify | AC verify | Phases | Fix round | Merged |
 |---|---|---|---|---|---|---|---|---|
@@ -131,28 +131,7 @@ Nguồn chân lý PASS/FAIL của Stage 4. Cột `Kết quả` để trống t�
 
 ---
 
-# 7. `$PLAN_DIR/decisions.md`
-
-Một block / câu hỏi. Ghi **ngay khi user trả lời**, không gom cuối stage.
-
-````markdown
-# `decisions.md` — CTC-FR-01-UC02
-
-| Mã AC | Mô tả | Nguồn | Phase | Unit test + test case | Điều kiện PASS | Kết quả |
-|---|---|---|---|---|---|---|
-| AC-01 | Hệ thống hiển thị thông báo "Import thành công {n} bản ghi" | `<URD>:457` | phase-02 | BE `ContactImportAppService_Tests.Should_Return_Imported_Count` (n=3 hợp lệ) · FE `contact-import.spec.ts > shows success toast with count` | Cả 2 test xanh; message khớp đúng chuỗi kể cả số `{n}` | PASS |
-| AC-02 | Bản ghi trùng số điện thoại bị bỏ qua và ghi vào file log lỗi | `<URD>:458` | phase-03 | BE `..._Tests.Should_Skip_Duplicate_Phone` (2 bản ghi cùng phone) · `..._Should_Write_Error_Log` | Bản ghi thứ 2 không vào DB **và** log lỗi có đúng 1 dòng với phone đó | |
-| - | Nút Import bị disable khi chưa chọn file | `<URD>:461` | phase-01 | FE `contact-import.spec.ts > import button disabled without file` | Nút `disabled` khi `file === null` | PASS |
-````
-
-- `Mã AC` — URD không đánh mã ⇒ ghi `-`, không tự bịa mã.
-- `Mô tả` phải là **substring** của dòng nguồn sau normalize (SKILL.md §2c). Không diễn giải lại.
-- `Điều kiện PASS` phải nói được **cái gì sai thì fail** — "test xanh" là điều kiện rỗng (Rule 9).
-- `Kết quả`: `PASS` · `FAIL` · `BLOCKED` · `NO TEST` (kẹt: thiếu env/dữ liệu ⇒ ghi lý do vào `gaps.md`).
-
----
-
-# 8. `$PLAN_DIR/debt.md`
+# 7. `$PLAN_DIR/debt.md`
 
 Ghi lại nợ mà plan chưa giải quyết.
 
@@ -179,7 +158,7 @@ Ghi lại nợ mà plan chưa giải quyết.
 
 ---
 
-# 9. `$PLAN_DIR/ba-questions.md`
+# 8. `$PLAN_DIR/ba-questions.md`
 
 - Các câu hỏi dành cho team BA.
 - Mô tả chi tiết, dẫn chứng, dễ hiểu để cho con người đọc.

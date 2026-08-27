@@ -96,12 +96,12 @@ metadata:
   node scripts/e2e/check-ac-e2e-coverage.mjs;   echo "TOOL_EXIT=$?"
   ```
   Cổng này đọc **tĩnh** (`@case:` trong text spec) ⇒ nó chứng minh AC **có** test, KHÔNG chứng minh test **xanh**. Trạng thái thật chỉ có sau khi chạy suite — xem Stage 5.
-- Báo cáo nghiệm thu do reporter Playwright ghi khi chạy suite: `apps/angular/e2e-playwright/fixtures/ac-report.md` (+ `.html`). Mẫu số là `ac-index/`, nên **mọi** AC có một dòng: `PASS` / `FAIL` / `BLOCKED` (kèm vật cản) / `SKIP` / `THIẾU E2E`.
+- Báo cáo nghiệm thu do reporter Playwright ghi khi chạy suite: `apps/angular/e2e-playwright/fixtures/ac-report.md` (+ `.html`). Mẫu số là `ac-index/`, nên **mọi** AC có một dòng: `PASS` / `FAIL` / `BLOCKED` (kèm vật cản) / `SKIP` / `NO TEST` (có ca nhưng lượt này chưa chạy) / `THIẾU E2E` (không có ca).
 - Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 5 - Result
 
-- Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend.
+- Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend của session này.
 - Liệt kê tổng thời gian chạy skill.
 - Liệt kê những điểm quy trình hoặc bộ luật (ngắn gọn) mà skill cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng **không giải quyết được**.
