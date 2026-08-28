@@ -56,7 +56,7 @@ metadata:
 
 ## Stage 2 - Plan
 
-- Đọc skill với flag `ak:plan <--urd> <--des> --deep` để chạy plan:
+- Đọc và chạy skill với flag `ak:plan <--urd> <--des> --deep` để chạy plan:
   - Nếu =1 UC thì sinh ra `$UC_DIR` = `$PLAN_DIR`.
   - Nếu >1 UC thì sinh ra `$UC_DIR` =`<repo-root>/plans/{stamp}-{slug}[/<ma-uc>]/`
 - Phase `phase-00-*` là phase khởi tạo dùng chung cho mọi phase (ví dụ migration,...).
@@ -71,12 +71,11 @@ metadata:
 ## Stage 3 - Implement
 
 - **Luôn đối chứng, không suy đoán.**
-- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents` + scout `codebase` + `graphify` -> tìm/chọn solution + trade off tối ưu nhất -> lưu vào `decisions.md`.
+- Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
 - Kiểm tra các công việc `cook` độc lập (không sửa trùng file) thì phân cho các subagent (sonnet).
-- Đọc skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
+- Đọc và chạy skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho tất cả các phase có BE.
-- Chạy cook FE cho tất cả các phase có BE (dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/*`).
-- Đọc nội dung AC -> xây dựng các bước thực hiện (B1, B2,...) để chạy AC -> viết spec cho e2e playwright theo các bước.
+- Chạy cook FE cho tất cả các phase có FE (**design layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
 - **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
@@ -87,7 +86,7 @@ metadata:
 - Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--no-test`:
   - **Có** - push commit và sang stage 5.
-  - **Không** - tiếp tục chạy *testing* đến hết workflow.
+  - **Không** - tiếp tục chạy *testing* cho đến hết **workflow** này.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - **Bật cổng cho UC vừa làm** — thêm mã UC vào `enforcedUcs` của `<repo-root>/apps/angular/e2e-playwright/ac-e2e-scope.json`.
 - Chạy cổng truy vết, exit ≠ 0 là chặn:
@@ -95,23 +94,23 @@ metadata:
   node scripts/e2e/check-ac-e2e-coverage.mjs;   echo "TOOL_EXIT=$?"
   ```
   Cổng này đọc **tĩnh** (`@case:` trong text spec) ⇒ nó chứng minh AC **có** test, KHÔNG chứng minh test **xanh**. Trạng thái thật chỉ có sau khi chạy suite — xem Stage 5.
-- Báo cáo nghiệm thu do reporter Playwright ghi khi chạy suite: `apps/angular/e2e-playwright/fixtures/ac-report.md` (+ `.html`). Mẫu số là `ac-index/`, nên **mọi** AC có một dòng: `PASS` / `FAIL` / `BLOCKED` (kèm vật cản) / `SKIP` / `NO TEST` (có ca nhưng lượt này chưa chạy) / `THIẾU E2E` (không có ca).
+- Báo cáo nghiệm thu do reporter Playwright ghi khi chạy suite: `apps/angular/e2e-playwright/fixtures/results/ac-report.html`. Mẫu số là `ac-index/`, nên **mọi** AC có một dòng: `PASS` / `FAIL` / `BLOCKED` (kèm vật cản) / `SKIP` / `NO TEST` (có ca nhưng lượt này chưa chạy) / `THIẾU E2E` (không có ca).
 - Xong fix thì commit Tiếng Anh `fix(<slug>): <phase-NN> <BE/FE> <description>`.
 
 ## Stage 5 - Result
 
-- Chạy script `<repo-root>/scripts/localhost.sh stopservices` + `<repo-root>/scripts/localhost.sh stop-service angular` để stop các service + frontend của session này.
-- Liệt kê tổng thời gian chạy skill.
-- Liệt kê những điểm quy trình hoặc bộ luật (ngắn gọn) mà skill cần cải thiện.
-- Liệt kê `gaps.md` còn tồn đọng **không giải quyết được** - so sánh với `codebase` + `graphify` để tìm `solution`.
+- Stop các **backend services + angular** của session này bằng script `localhost.sh` (linux/macos) hoặc `stop-service.ps1` (windows).
+- Liệt kê **tổng thời gian chạy skill** này.
+- Liệt kê **ngắn gọn** những điểm **workflow hoặc rules** mà skill này cần cải thiện.
+- Liệt kê `gaps.md` còn tồn đọng **không giải quyết được** - so sánh với `codebase` + `graphify` để đưa ra `solution`.
 
 ---
 
 # 4. Token & context
 
-- Đọc URD **một lần**, cắt đúng đoạn UC vào `uc-source.md`. Stage sau đọc `uc-source.md` (khi cần).
+- Đọc URD **một lần**, cắt đúng đoạn **nguyên văn UC** vào `uc-source.md`. Stage sau đọc `uc-source.md` (khi cần dùng).
 - Không `Read` file >500 dòng nguyên bản — `grep -n` / `sed -n` lấy đúng khoảng.
-- Tự động phân bổ subagent (model) hợp lý.
+- Tự động phân bổ subagent (model) 1 cách hợp lý.
 - Truyền **path tuyệt đối** cho subagent, không dán nội dung file.
 - Mọi state ghi ra file **ngay khi có**.
 
@@ -121,9 +120,11 @@ metadata:
 
 | File | Nội dung |
 |---|---|
-| `references/templates.md` | Khuôn cho `uc-source.md`, `ac-source.md`, `ac-verify.md`, `state.md`, `decisions.md`, `gaps.md`, `debt.md`, `ba-questions.md` |
+| `references/templates.md` | Lưu nội dung với khuôn cho các loại sau: `uc-source.md`, `ac-source.md`, `ac-verify.md`, `state.md`, `decisions.md`, `gaps.md`, `debt.md`, `ba-questions.md` |
 
-Script:
+---
+
+# 6. Scripts
 
 | Script | Dùng ở | Trả lời câu gì |
 |---|---|---|

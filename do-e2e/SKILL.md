@@ -23,7 +23,7 @@ yarn test:headless                # chạy toàn bộ: banking-service → FPTCX
     cd apps/angular/e2e-playwright
     yarn install
     yarn browsers    # playwright install chromium — phải khớp version đã pin
-    cp .env.example  # điền PW_USER / PW_PASSWORD (gitignored, không hardcode)
+    cp .env*  # điền PW_USER / PW_PASSWORD (gitignored, không hardcode)
     ```
     - Prereq chạy local (đủ 4 thứ trước khi chạy test):
         1. AuthServer ở cổng 44366
@@ -31,14 +31,15 @@ yarn test:headless                # chạy toàn bộ: banking-service → FPTCX
         3. WebGateway ở cổng 44323
         4. cd apps/angular && yarn dev (FE ở cổng 4200)
         5. Cổng nào thiếu thì tự start thêm bằng script `localhost.sh`
+        6. Kiểm tra và thêm `buckets` (nếu chưa có) nếu cần dùng storage.
     - Chạy:
     ```bash
-    yarn test                                # TẤT CẢ spec (api + ui, sequential, workers=1)
-    yarn test:regression                     # tuyển @regression GỒM @blocked — CI dùng cái này
-    yarn test:green                          # @regression trừ @blocked — dùng lúc đang sửa
-    npx playwright test tests/<MÃ-UC>        # chạy 1 UC
-    npx playwright test --grep @case:<MÃ-AC> # chạy đúng 1 AC
-    yarn report                              # mở HTML report lần chạy gần nhất
+    yarn test                                  # TẤT CẢ spec (api + ui, sequential, workers=1)
+    yarn test:regression                       # tuyển @regression GỒM @blocked — CI dùng cái này
+    yarn test:green                            # @regression trừ @blocked — dùng lúc đang sửa
+    npx playwright test tests/<Module>/<MÃ-UC> # chạy 1 UC
+    npx playwright test --grep @case:<MÃ-AC>   # chạy đúng 1 AC
+    yarn report                                # mở HTML report lần chạy gần nhất
     ```
 - Hiển thị kết quả của `apps/angular/e2e-playwright/fixtures/report/index.html`.
-- Hiển thị kết quả của `apps/angular/e2e-playwright/fixtures/ac-report.md`.
+- Hiển thị kết quả của `apps/angular/e2e-playwright/fixtures/ac-report.html`.
