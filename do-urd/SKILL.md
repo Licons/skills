@@ -32,7 +32,7 @@ metadata:
 - **Cấm `echo "exit=$?"` sau chuỗi lệnh.** Bắt buộc đặt `echo "TOOL_EXIT=$?"` **ngay sau** lệnh cần đo, trước mọi lệnh khác.
 - **Cổng mới phải thử ngược** - phá đúng thứ nó canh ⇒ exit ≠ 0, khôi phục ⇒ exit = 0. Cổng chưa từng đỏ chỉ chứng minh nó chạy.
 - **Chỉ được** start service để test apply migration lên DB `localhost` đang trỏ tới.
-- Agent phải được **yêu cầu đối chiếu** lại số của lead.
+- Subagent phải được **yêu cầu đối chiếu** lại số của lead.
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 
 ---
@@ -72,7 +72,7 @@ metadata:
 
 - **Luôn đối chứng, không suy đoán.**
 - Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
-- Kiểm tra các công việc `cook` độc lập (không sửa trùng file) thì phân cho các subagent (sonnet).
+- Kiểm tra các công việc `cook` độc lập (không sửa trùng file) thì **cho phép** tạo các subagent (sonnet) để làm việc.
 - Đọc và chạy skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
 - Chạy cook BE cho tất cả các phase có BE.
 - Chạy cook FE cho tất cả các phase có FE (**design layout** dựa trên `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
