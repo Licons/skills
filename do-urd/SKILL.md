@@ -34,6 +34,7 @@ metadata:
 - **Chỉ được** start service để test apply migration lên DB `localhost` đang trỏ tới.
 - Subagent phải được **yêu cầu đối chiếu** lại số của lead.
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
+- **Bỏ qua** MCP `utopforge`.
 
 ---
 
@@ -56,6 +57,7 @@ metadata:
 
 ## Stage 2 - Plan
 
+- Đọc `graphify` để hiểu `codebase` và `architecture` trước.
 - Đọc và chạy skill với flag `ak:plan <--urd> <--des> --deep` để chạy plan:
   - Nếu =1 UC thì sinh ra `$UC_DIR` = `$PLAN_DIR`.
   - Nếu >1 UC thì sinh ra `$UC_DIR` =`<repo-root>/plans/{stamp}-{slug}[/<ma-uc>]/`
