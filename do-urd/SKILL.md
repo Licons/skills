@@ -35,6 +35,7 @@ metadata:
 - Subagent phải được **yêu cầu đối chiếu** lại số của lead.
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 - **Bỏ qua** MCP `utopforge`.
+- **Không dùng** model `Fable` cho các subagent.
 
 ---
 
