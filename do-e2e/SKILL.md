@@ -11,13 +11,13 @@ metadata:
 
 # Workflow
 
-- Chạy Unit Test (Karma + Jasmine) — thư mục `apps/angular`.
+1. Chạy Unit Test (Karma + Jasmine) — thư mục `apps/angular`.
 ```bash
 cd apps/angular
 yarn install                      # nếu chưa cài dependency
 yarn test:headless                # chạy toàn bộ: banking-service → FPTCXSuite → saas-service (ChromeHeadless, watch=false)
 ```
-- Chạy E2E Playwright — thư mục `apps/angular/e2e-playwright` (package.json + yarn.lock RIÊNG).
+2. Chạy E2E Playwright — thư mục `apps/angular/e2e-playwright` (package.json + yarn.lock RIÊNG).
     - Cài một lần:
     ```bash
     cd apps/angular/e2e-playwright
@@ -41,5 +41,4 @@ yarn test:headless                # chạy toàn bộ: banking-service → FPTCX
     npx playwright test --grep @case:<MÃ-AC>   # chạy đúng 1 AC
     yarn report                                # mở HTML report lần chạy gần nhất
     ```
-- Hiển thị kết quả của `apps/angular/e2e-playwright/fixtures/report/index.html`.
-- Hiển thị kết quả của `apps/angular/e2e-playwright/fixtures/ac-report.html`.
+3. Hiển thị tổng quát kết quả của lượt chạy.
