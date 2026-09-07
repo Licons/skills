@@ -47,7 +47,7 @@ const REQ_SRC = '[A-Z][A-Z0-9]{1,7}(?:-FR-\\d{1,2})?-UC-?\\d{1,3}';
 // P1: "### 5.2.B.5. CTC · UC 05: Gộp liên hệ trùng"  (mã đầy đủ nằm trong bảng của mục)
 // P2: "#### 5.2.3.1. AP-UC-01 — Màn hình quản lý…"   (mã nằm ngay trên heading, AC rút gọn)
 const P1 = /^#{2,4}\s+[\d.A-Za-z]*\s*([A-Z0-9]{2,6})\s*[·:]\s*UC\s*(\d+)\s*:/;
-const P2 = new RegExp(`^#{2,5}\\s+[\\d.]*\\s*(${REQ_SRC})\\s*[—–:]`);
+const P2 = new RegExp(`^#{2,5}\\s+[\\d.A-Za-z]*\\s*(${REQ_SRC})\\s*[—–:]`);
 const ucBlocks = []; // {module, no, startLine, req?}
 lines.forEach((raw, i) => {
   const m1 = raw.match(P1);

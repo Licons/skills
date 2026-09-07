@@ -19,4 +19,4 @@ metadata:
   - Thay `<session-id>` = session id này.
   - Thay `<branch-name>` = tên nhánh working này.
 3. Chạy curl với thông số trên `curl --location '<url>' --header … --data … --silent`.
-4. Tạo `monitor` để lắng nghe tập tin `$HOME/Projects/events.jsonl` nếu event trả về session id của mình thì đọc mô tả (fix nếu có lỗi).
+4. Tạo `monitor` để lắng nghe tập tin `$HOME/Projects/events.jsonl` nếu event trả về session id của mình thì đọc mô tả.

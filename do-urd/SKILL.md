@@ -14,9 +14,9 @@ metadata:
 | Mã | Điều kiện | Xử lý |
 |---|---|---|
 | E01 | thiếu `--urd` | abort |
-| E02 | `--urd` không đuôi `.md` | abort |
+| E02 | `--urd` không đuôi `.md` hoặc `.docx` | abort |
 | E03 | file không đọc được | abort |
-| E04 | không tìm thấy mã UC (thử **3 mẫu**: `*-UC{NN}`, `*-UC-{NN}`, `UC {NN}`) | **cảnh báo rồi hỏi user** |
+| E04 | không tìm thấy mã UC (thử **3 mẫu**: `**-UC{NN}`, `**-UC-{NN}`, `UC {NN}`) | **cảnh báo rồi hỏi user** |
 | E05 | không phải repo `Utop.VietBank.CRM` | abort |
 
 ---
@@ -35,7 +35,7 @@ metadata:
 - Subagent phải được **yêu cầu đối chiếu** lại số của lead.
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 - **Bỏ qua** MCP `utopforge`.
-- **Không dùng** model `fable` cho các subagent (dùng `opus/sonnet`).
+- **Không dùng** model `fable` cho các subagent (chỉ dùng `opus/sonnet`).
 
 ---
 
