@@ -6,6 +6,7 @@ SKILLS=(
   do-urd
   do-test
   verify-e2e
+  run-graphify
 )
 
 DESTINATIONS=(
