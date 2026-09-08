@@ -14,7 +14,7 @@ metadata:
 | Mã | Điều kiện | Xử lý |
 |---|---|---|
 | E01 | thiếu `--urd` | abort |
-| E02 | `--urd` không đuôi `.md` hoặc `.docx` | abort |
+| E02 | `--urd` không đuôi `.md` | abort |
 | E03 | file không đọc được | abort |
 | E04 | không tìm thấy mã UC (thử **3 mẫu**: `**-UC{NN}`, `**-UC-{NN}`, `UC {NN}`) | **cảnh báo rồi hỏi user** |
 | E05 | không phải repo `Utop.VietBank.CRM` | abort |
@@ -58,13 +58,14 @@ metadata:
 
 ## Stage 2 - Plan
 
+- Đối xứng với file `docx` (hình ảnh/sơ đồ) của đường dẫn `--urd` ở cùng thư mục.
 - Đọc `graphify` để hiểu `codebase` và `architecture` trước.
 - Đọc và chạy skill với flag `ak:plan <--urd> <--des> --deep` để chạy plan:
   - Nếu =1 UC thì sinh ra `$UC_DIR` = `$PLAN_DIR`.
   - Nếu >1 UC thì sinh ra `$UC_DIR` =`<repo-root>/plans/{stamp}-{slug}[/<ma-uc>]/`
 - Phase `phase-00-*` là phase khởi tạo dùng chung cho mọi phase (ví dụ migration,...).
-- Copy **nguyên văn UC** vào `$UC_DIR/uc-source.md`
-- Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`
+- Copy **nguyên văn UC** vào `$UC_DIR/uc-source.md` - thêm tham chiếu từ file trong `--urd`.
+- Copy **nguyên văn AC** nghiệm thu vào `$UC_DIR/ac-source.md`.
 - **Đăng ký AC vào chỉ mục** `<repo-root>/apps/angular/e2e-playwright/ac-index/<module>/<MÃ-UC>.json` — sinh bằng `node <repo-root>/scripts/e2e/import-ac-index.mjs`, KHÔNG viết tay. Chưa đăng ký = AC vô hình với cổng và báo cáo nghiệm thu.
 - ⛔ **Luật nghiệm thu ở `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu — 1 AC = 1 ca Playwright*.** Đọc ở đó. Tóm tắt để biết mình đang cần gì: 1 AC = ít nhất 1 ca e2e · xUnit/Karma là **tiền đề**, không phải bằng chứng · không dựng được thì khai `blocked` (`by` + `why`) · còn lại là `THIẾU E2E`.
 - Quét `$PLAN_DIR` rồi so sánh với scout `codebase` + `graphify` rồi `clarify user`, lưu lại vào `decisions.md`.
