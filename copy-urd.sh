@@ -5,6 +5,7 @@ DEST_SKILLS="/.claude/skills"
 SKILLS=(
   do-urd
   do-test
+  do-e2e
   verify-e2e
   run-graphify
 )
@@ -12,7 +13,7 @@ SKILLS=(
 DESTINATIONS=(
   "../VietBank/Utop.VietBank.CRM"
   "../VietBank/Utop.VietBank.CRM.1"
-  # "../VietBank/Utop.VietBank.CRM.2"
+  "../VietBank/Utop.VietBank.CRM.2"
 )
 
 for DEST in "${DESTINATIONS[@]}"; do

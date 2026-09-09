@@ -16,7 +16,9 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true }).filter((d) => d.isD
   for (const raw of readFileSync(f, 'utf8').split('\n')) {
     // CHUẨN MÃ AC (đồng bộ extract-ac.mjs + import-urd-ac.mjs, 27/08): mã URD nguyên văn
     // (kể cả dạng gạch `-UC-NN-AC-NN`) hoặc mã kiến tạo Form A/B (`-UCNN-ACNN`).
-    const m = raw.match(/^\|\s*([A-Z0-9]{2,7}(?:-FR-\d+)?-UC-?\d+-AC-?\d+[a-zA-Z]?)\s*\|\s*(\d+)\s*\|/);
+    // Cột URD:line nhận cả `3136` lẫn `` `URD_x.md:3136` `` (quy ước `ref` của e2e-playwright.md §Chỉ mục AC).
+    // Trước 09/09 chỉ nhận số trần ⇒ SEG/C360 (dạng có tên tệp) bị SKIP im lặng — cổng không đo gì mà vẫn xanh.
+    const m = raw.match(/^\|\s*([A-Z0-9]{2,7}(?:-FR-\d+)?-UC-?\d+-AC-?\d+[a-zA-Z]?)\s*\|\s*`?(?:[^|`]*?:)?(\d+)`?\s*\|/);
     if (!m) continue;
     const [, code, lineNo] = m;
     const src = urd[Number(lineNo) - 1];

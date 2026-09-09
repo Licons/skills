@@ -35,7 +35,7 @@ metadata:
 - Subagent phải được **yêu cầu đối chiếu** lại số của lead.
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 - **Bỏ qua** MCP `utopforge`.
-- **Không dùng** model `fable` cho các subagent (chỉ dùng `opus/sonnet`).
+- Các subagent chỉ dùng model `opus` hoặc `sonnet`.
 
 ---
 
@@ -74,7 +74,6 @@ metadata:
 
 ## Stage 3 - Implement
 
-- Stage này `subagents` dùng model `sonnet`.
 - **Luôn đối chứng, không suy đoán.**
 - Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
 - Đọc và chạy skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
@@ -86,7 +85,6 @@ metadata:
 
 ## Stage 4 - Testing
 
-- Stage này `subagents` dùng model `sonnet`.
 - Chạy BE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--no-test`:
@@ -104,7 +102,6 @@ metadata:
 
 ## Stage 5 - Result
 
-- Stage này dùng model `opus`.
 - Stop các **backend services + angular** của session này bằng script `localhost.sh` (linux/macos) hoặc `stop-service.ps1` (windows).
 - Liệt kê **tổng thời gian chạy skill** này.
 - Liệt kê **ngắn gọn** những điểm **workflow hoặc rules** mà skill này cần cải thiện.
@@ -116,7 +113,7 @@ metadata:
 
 - Đọc URD **một lần**, cắt đúng đoạn **nguyên văn UC** vào `uc-source.md`. Stage sau đọc `uc-source.md` (khi cần dùng).
 - Không `Read` file >500 dòng nguyên bản — `grep -n` / `sed -n` lấy đúng khoảng.
-- Tự động phân bổ subagent (model) 1 cách hợp lý.
+- Tự động phân bổ subagent (model `opus` hoặc `sonnet`) 1 cách hợp lý - **không** để subagent sửa chung file.
 - Truyền **path tuyệt đối** cho subagent, không dán nội dung file.
 - Mọi state ghi ra file **ngay khi có**.
 
