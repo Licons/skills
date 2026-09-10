@@ -46,47 +46,37 @@ Cột `UC` = `<ma-uc>` (mã CHUẨN HOÁ — bỏ gạch trước số UC: `AP-U
 
 # 2. `$PLAN_DIR/decisions.md`
 
-Một block / câu hỏi. Ghi **ngay khi user trả lời**, không gom cuối stage.
+Quyết định **dev tự chọn để làm tiếp** khi có vấn đề phát sinh — dựa trên URD + design + codebase, theo hướng
+đúng AC. Gồm cả câu user trả lời ở clarify (Stage 2) **và** quyết định kỹ thuật ở cook/test (Stage 3–4). Ghi ngay
+khi chốt. Mọi "mặc định tạm" trong `gaps.md` phải có một D tương ứng.
 
 ````markdown
 ## D-01 — Import trùng số điện thoại thì xử lý sao?
 
-- **Vì sao có câu hỏi này**: URD `<URD>:412` nói "bỏ qua bản ghi trùng" nhưng không định nghĩa "trùng" theo trường nào; `ContactAppService` hiện dedupe theo `Code` (`<repo-root>/services/...:88`).
-- **Kiến thức đã có**: `Contacts.Code` có filtered unique index (migration `194be4cba`). `Phone` không unique. 2 nguồn mâu thuẫn ⇒ không tự chọn (rule 1).
-- **Câu hỏi**: Bản ghi import coi là trùng khi nào?
-- **Các lựa chọn**:
-  - A. Trùng `Code` — khớp index hiện có, không đổi schema.
-  - B. Trùng `Phone` — đúng nghiệp vụ user nêu, cần index mới + migration.
-  - C. Trùng cả hai — chặt nhất, rủi ro bỏ sót bản ghi hợp lệ.
-- **Câu trả lời**: **B** - Thêm phase migration index `Phone`.
-- **Chọn bởi**: user (`260815-1104`). 
-
+- **Vấn đề**: URD `<URD>:412` "bỏ qua bản ghi trùng" nhưng không định nghĩa "trùng"; code hiện dedupe theo `Code`.
+- **Lựa chọn**: A. trùng `Code` (khớp index) · B. trùng `Phone` (đúng nghiệp vụ, cần migration) · C. cả hai.
+- **Chọn**: **B** — thêm phase migration index `Phone`.
+- **Chọn bởi**: user (`260815-1104`) | Li (tự chốt, đảo được nếu BA trả lời khác).
+- **Liên quan**: G-03 · Q-02 · AC CTC-FR-01-UC02-AC04.
 ````
 
 ---
 
 # 3. `$PLAN_DIR/gaps.md`
 
-Chỉ ghi từ Stage 3 trở đi (Stage 1–2 dùng `decisions.md` vì còn được hỏi user).
+**Chỉ** khoảng trống giữa **tài liệu**: URD ↔ URD (BR mâu thuẫn AC), URD ↔ design, URD ↔ ma trận BA, URD thiếu
+mệnh đề, URD tự khai ngoài phạm vi. KHÔNG ghi hạn chế codebase (→ `debt.md`) hay lỗi tìm thấy khi test (→
+`state.md`). Mỗi gap trỏ tới câu hỏi BA (Q-nn) và quyết định tạm (D-nn). Ghi từ Stage 2 trở đi.
 
 ````markdown
-| # | UC | AC | Stage | Nhóm | Mô tả | Nguồn | Chặn AC | Trạng thái |
+| # | UC | AC | Loại | Mô tả (trích nguyên văn hai bên) | Nguồn | Chặn AC | Tạm theo | Hỏi BA |
 |---|---|---|---|---|---|---|---|---|
-| G-01 | ctc-fr-01-uc02 | ctc-fr-01-uc02-ac01 | cook | plan | Phase 05 cần endpoint export chưa có trong URD | `<URD>:520` | AC-11 | UC BLOCKED |
-
-## G-APR-01 · AP-UC-04-AC-05 — Chế độ xử lý request đang chạy khi Deactivate (CQ-079)
-- **Mã UC**: `AP-UC-04-AC-05` (+ luồng phụ A1 của AP-UC-04).
-- **Dẫn chứng nguyên văn**: *"request đang chạy được xử lý theo tham số 'Chế độ xử lý request đang
-  chạy khi DeKích hoạt' — nhánh A giữ chạy tiếp trên phiên bản cũ (AC-05b) hoặc nhánh B dừng & yêu
-  cầu reTrình (AC-05c), điểm chốt mở CQ-079"*.
-- **Loại**: THIẾU THÔNG TIN (BA chưa chốt CQ-079).
-- **Vì sao**: URD tự khai đây là "điểm chốt mở" — hai nhánh cho hành vi trái ngược nhau, không suy
-  được từ BR nào. Default tạm: nhánh A (D-09, decisions.md) vì không phá trạng thái request đang
-  chạy (khớp GOV-APR-02 "giữ dữ liệu request phiên bản cũ").
-  
+| G-01 | kpi-fr-01-uc02 | UC02-AC17 | CONFLICT | BR-01-16 "ẩn hoàn toàn khối so sánh với CBBH" ↔ AC17 "CBBH chỉ hiện con số, không hiện tên" | `<URD>:3274,3282` | AC17 | D-10 | Q-09 |
+| G-03 | kpi-fr-01-uc02 | UC02-AC09 | NGOÀI PHẠM VI | BR-01-10 "chưa thuộc Golive 1; cần chốt nguồn lịch sử tư vấn" | `<URD>:3240` | AC09 (blocked) | — | B-01 |
 ````
 
-- `Nhóm`: `plan` (thiếu dữ kiện từ URD/plan) · `dev` (subagent fail 2 lần) · `verify` (hết 5 vòng fix).
+- `Loại`: `CONFLICT` (hai chỗ nói ngược) · `THIẾU THÔNG TIN` (URD không cho dữ kiện) · `DESIGN≠URD` · `NGOÀI PHẠM VI` (URD tự khai) · `THIẾU DỮ LIỆU NỀN` (danh mục/ánh xạ BA chưa cấp).
+- `Chặn AC`: AC nào không nghiệm thu được vì gap này; nếu `blocked` thì khai cả trong `ac-e2e-scope.json`.
 
 ---
 
@@ -171,20 +161,22 @@ Ghi lại nợ mà plan chưa giải quyết.
 
 # 8. `$PLAN_DIR/ba-questions.md`
 
-- Các câu hỏi dành cho team BA.
-- Mô tả chi tiết, dẫn chứng, dễ hiểu để cho con người đọc.
+Chỉ ghi việc **bị chặn — dev không thể đi tiếp**: thiếu phân hệ đích, thiếu dữ liệu nền chỉ BA/Hội sở có (danh
+mục, ánh xạ, nội dung, mã quyền), URD tự khai ngoài phạm vi, hai chỗ URD nói ngược đúng hành vi cần nghiệm thu.
+Chỗ URD chưa rõ nhưng dev chọn được cách làm ⇒ `decisions.md`, KHÔNG ghi ở đây. Người đọc là team BA: không tên
+file/lớp/hàm; mỗi mục có tiền đề (mã UC/AC + tiêu đề), trích URD (mã BR/AC + `:dòng`), dev đang tạm làm gì, và
+BA cần quyết gì (bỏ khỏi nghiệm thu đợt này hay cung cấp gì; lựa chọn a/b/c nếu có).
 
 ````markdown
-# Câu hỏi dành cho BA
+# Việc bị chặn cần team BA — <phân hệ> (<tên URD>, UC …)
 
-## <Mã UC> <title>
+<2–3 câu mở đầu: đây là gì, khác gì với decisions.md, cách trả lời.>
 
-### <Mã AC> <title>
+## B-01 · <tiêu đề một dòng> (UCxx ACyy)
 
-- **Vì sao có câu hỏi này**: URD `<URD>:412` nói "bỏ qua bản ghi trùng" nhưng không định nghĩa "trùng" theo trường nào; `ContactAppService` hiện dedupe theo `Code` (`<repo-root>/services/...:88`).
-- **Kiến thức đã có**: `Contacts.Code` có filtered unique index (migration `194be4cba`). `Phone` không unique. 2 nguồn mâu thuẫn ⇒ không tự chọn (rule 1).
-- **Câu hỏi**: Bản ghi import coi là trùng khi nào?
+<URD nói gì / thiếu gì — dẫn BR/AC + `:dòng`. Dev đang tạm làm gì (nếu có).>
 
+Cần BA: <bỏ khỏi nghiệm thu đợt này, hay cung cấp gì; a/b/c nếu có>.
 ````
 
 ---

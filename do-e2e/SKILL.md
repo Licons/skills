@@ -41,4 +41,8 @@ yarn test:headless                # chạy toàn bộ: banking-service → FPTCX
     npx playwright test --grep @case:<MÃ-AC>   # chạy đúng 1 AC
     yarn report                                # mở HTML report lần chạy gần nhất
     ```
-3. Hiển thị tổng quát kết quả của lượt chạy.
+    - Bảng nghiệm thu `fixtures/results/ac-report.html` chỉ sinh khi chạy với reporter mặc định — **không** truyền `--reporter=list` ở lượt chốt số.
+    - Lượt trọn suite chạy tách khỏi harness (`setsid nohup … &`, chờ bằng `until grep PW_EXIT`); RAM thấp thì harness giết lệnh nền. Trước khi chạy: tắt service không cần (chat · file-management · audit-logging · background-jobs · gw-3cx), `dotnet build-server shutdown`.
+    - Giao subagent: chỉ chạy Playwright, **tiền cảnh** (không `run_in_background`/chờ notification), không build/restart service; chỉ lead restart và báo trước cửa sổ restart.
+    - Sửa bug: subagent tách theo file (BE / spec API / FE + spec UI), lỗi ngoài phạm vi ⇒ báo lead kèm request/response thật.
+3. Hiển thị tổng quát kết quả của lượt chạy: số ca xanh/đỏ, bảng nghiệm thu theo UC (PASS/FAIL/BLOCKED/NO TEST), danh sách lỗi sản phẩm thật đã sửa, ca chập chờn (đo lại riêng). Stop stack bằng `localhost.sh stop`.

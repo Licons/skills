@@ -36,6 +36,8 @@ metadata:
 - Tạo **Monitor** để **chắc chắn** chạy đúng **workflow**.
 - **Bỏ qua** MCP `utopforge`.
 - Các subagent chỉ dùng model `opus` hoặc `sonnet`.
+- **Bản gốc skill: `/home/quacn/Projects/skills/do-urd/`** — sửa ở đó trước rồi chép vào repo; Stage 1 chạy `node <skill>/scripts/check-skill-sync.mjs <repo-root>` (exit ≠ 0 = lệch).
+- **Subagent chạy tiền cảnh**: prompt luôn ghi *"không `run_in_background`, không chờ notification"*. Chỉ lead build/restart service.
 
 ---
 
@@ -53,7 +55,11 @@ metadata:
 - `{stamp}` = `yyMMdd-HHmm`, `{slug}`= mã UC hoặc mô tả ngắn gọn (ví dụ: `c360-fr-01-uc01`, `c360-batch1-6uc`).
 - Tạo nhánh `tasks/{stamp}-{slug}` từ nhánh `HEAD`.
 - Tạo `$PLAN_DIR` = `<repo-root>/plans/{stamp}-{slug}/`.
-- Tạo file `state.md`, `gaps.md`, `decisions.md` trong `$PLAN_DIR`
+- Tạo file `state.md`, `gaps.md`, `decisions.md`, `ba-questions.md`, `debt.md` trong `$PLAN_DIR` (khuôn: `references/templates.md`):
+  - `gaps.md` — khoảng trống **giữa tài liệu** (URD↔URD, URD↔design, URD↔ma trận BA); mỗi gap trỏ D (làm tiếp thế nào) và B nếu bị chặn; không ghi hạn chế code.
+  - `decisions.md` — dev **chọn gì để làm tiếp** (clarify + kỹ thuật ở cook/test), theo hướng AC; mỗi mặc định tạm trong `gaps.md` có một D.
+  - `ba-questions.md` — chỉ việc **bị chặn, dev không đi tiếp được** (B-nn), viết cho team BA: tiền đề (mã + tiêu đề), trích URD, cần BA quyết gì; không tên file/lớp. URD chưa rõ nhưng dev chọn được ⇒ `decisions.md`.
+  - `debt.md` — hạn chế codebase / việc làm sau.
 - Chạy `<repo-root>/scripts/db/use-local-db.sh` (linux/macos) hoặc `<repo-root>/scripts/db/use-local-db.ps1` (windows) để thay đổi các setting về `localhost`.
 
 ## Stage 2 - Plan
@@ -69,6 +75,7 @@ metadata:
 - **Đăng ký AC vào chỉ mục** `<repo-root>/apps/angular/e2e-playwright/ac-index/<module>/<MÃ-UC>.json` — sinh bằng `node <repo-root>/scripts/e2e/import-ac-index.mjs`, KHÔNG viết tay. Chưa đăng ký = AC vô hình với cổng và báo cáo nghiệm thu + tên file tham chiếu.
 - ⛔ **Luật nghiệm thu ở `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu — 1 AC = 1 ca Playwright*.** Đọc ở đó. Tóm tắt để biết mình đang cần gì: 1 AC = ít nhất 1 ca e2e · xUnit/Karma là **tiền đề**, không phải bằng chứng · không dựng được thì khai `blocked` (`by` + `why`) · còn lại là `THIẾU E2E`.
 - Quét `$PLAN_DIR` rồi so sánh với scout `codebase` + `graphify` rồi `clarify user`, lưu lại vào `decisions.md`.
+- **Hai hệ mã UC** (URD ≠ ma trận BA, `permissions.md` §G-26): lập bảng đối chiếu theo chức năng ở plan; UC không có trong ma trận ⇒ hỏi user ngay vòng clarify đầu, không tự đặt mã.
 - **Lặp lại clarify user** cho đến khi không còn thắc mắc.
 - Xong plan thì commit Tiếng Anh `plan(<slug>): <description>`.
 
@@ -77,7 +84,7 @@ metadata:
 - **Luôn đối chứng, không suy đoán.**
 - Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
 - Đọc và chạy skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
-- Chạy cook BE cho tất cả các phase có BE.
+- Chạy cook BE cho tất cả các phase có BE. ⛔ `ApplicationService`/`DomainService` ABP không `sealed` (Castle proxy) — `dotnet-services.md` §Coding Standards.
 - Chạy cook FE cho tất cả các phase có FE (**design layout** dựa trên các file trong `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
 - **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
@@ -88,7 +95,11 @@ metadata:
 - Chạy BE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Chạy FE Unit Test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - Check cờ `--no-test`:
-  - **Có** - push commit và sang stage 5.
+  - **Có** - smoke tĩnh cho spec e2e vừa viết rồi push, sang stage 5:
+    ```bash
+    cd apps/angular/e2e-playwright && npx tsc --noEmit -p tsconfig.json 2>&1 | grep -cE 'tests/<Module>/'   # phải = 0
+    npx playwright test tests/<Module> --list > /dev/null; echo "TOOL_EXIT=$?"                             # phải = 0
+    ```
   - **Không** - tiếp tục chạy *testing* cho đến hết **workflow** này.
 - Chạy e2e playwright test -> fix bug nếu có (tối đa 5 vòng, còn lỗi lưu `fails.md`).
 - **Bật cổng cho UC vừa làm** — thêm mã UC vào `enforcedUcs` của `<repo-root>/apps/angular/e2e-playwright/ac-e2e-scope.json`.
@@ -106,6 +117,15 @@ metadata:
 - Liệt kê **tổng thời gian chạy skill** này.
 - Liệt kê **ngắn gọn** những điểm **workflow hoặc rules** mà skill này cần cải thiện.
 - Liệt kê `gaps.md` còn tồn đọng **không giải quyết được** - so sánh với `codebase` + `graphify` để đưa ra `solution`.
+
+---
+
+# 3b. Nối lại sau khi bị ngắt (spend limit · crash · hết context)
+
+- Mỗi lần giao việc: ghi 1 dòng checkpoint vào `state.md` (agent · phạm vi file · đang làm · bước kế).
+- Nối lại bằng `SendMessage` tới **đúng tên agent cũ**, kèm trạng thái working tree + việc còn lại. Không spawn agent mới.
+- Trước khi nối: kiểm hạn mức, stack (4 cổng), RAM.
+- Agent im lặng > 10 phút ⇒ treo (thường chờ notification nền): nhắn chạy tiền cảnh.
 
 ---
 
