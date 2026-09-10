@@ -58,7 +58,7 @@ metadata:
 - Tạo file `state.md`, `gaps.md`, `decisions.md`, `ba-questions.md`, `debt.md` trong `$PLAN_DIR` (khuôn: `references/templates.md`):
   - `gaps.md` — khoảng trống **giữa tài liệu** (URD↔URD, URD↔design, URD↔ma trận BA); mỗi gap trỏ D (làm tiếp thế nào) và B nếu bị chặn; không ghi hạn chế code.
   - `decisions.md` — dev **chọn gì để làm tiếp** (clarify + kỹ thuật ở cook/test), theo hướng AC; mỗi mặc định tạm trong `gaps.md` có một D.
-  - `ba-questions.md` — chỉ việc **bị chặn, dev không đi tiếp được** (B-nn), viết cho team BA: tiền đề (mã + tiêu đề), trích URD, cần BA quyết gì; không tên file/lớp. URD chưa rõ nhưng dev chọn được ⇒ `decisions.md`.
+  - `ba-questions.md` — chỉ việc **bị chặn, dev không đi tiếp được**, gom theo loại, trích nguyên văn UC/AC/BR, viết cho team BA; không tên file/lớp. Không ghi: ngoài phạm vi golive (bỏ qua), phụ thuộc phân hệ làm sau (`gaps.md`), URD chưa rõ nhưng dev chọn được (`decisions.md`).
   - `debt.md` — hạn chế codebase / việc làm sau.
 - Chạy `<repo-root>/scripts/db/use-local-db.sh` (linux/macos) hoặc `<repo-root>/scripts/db/use-local-db.ps1` (windows) để thay đổi các setting về `localhost`.
 

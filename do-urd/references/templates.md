@@ -161,22 +161,29 @@ Ghi lại nợ mà plan chưa giải quyết.
 
 # 8. `$PLAN_DIR/ba-questions.md`
 
-Chỉ ghi việc **bị chặn — dev không thể đi tiếp**: thiếu phân hệ đích, thiếu dữ liệu nền chỉ BA/Hội sở có (danh
-mục, ánh xạ, nội dung, mã quyền), URD tự khai ngoài phạm vi, hai chỗ URD nói ngược đúng hành vi cần nghiệm thu.
-Chỗ URD chưa rõ nhưng dev chọn được cách làm ⇒ `decisions.md`, KHÔNG ghi ở đây. Người đọc là team BA: không tên
-file/lớp/hàm; mỗi mục có tiền đề (mã UC/AC + tiêu đề), trích URD (mã BR/AC + `:dòng`), dev đang tạm làm gì, và
-BA cần quyết gì (bỏ khỏi nghiệm thu đợt này hay cung cấp gì; lựa chọn a/b/c nếu có).
+Chỉ ghi việc **bị chặn — dev không thể đi tiếp**. KHÔNG ghi: URD tự khai ngoài phạm vi golive (bỏ qua, chỉ đánh `blocked` trong `ac-e2e-scope.json`), phụ thuộc phân hệ dự kiến làm sau (ghi `gaps.md`, cột chặn = tên batch), chỗ URD chưa rõ nhưng dev chọn được cách làm (`decisions.md`).
+Người đọc là team BA: không tên file/lớp/hàm. **Gom theo loại vướng** (thiếu dữ liệu nền BA/Hội sở · URD mâu thuẫn/thiếu mệnh đề · …); trong mỗi loại xếp **theo thứ tự UC rồi AC**,
+trích **nguyên văn** tên UC, câu AC và **chỉ** BR liên quan trực tiếp (kèm `:dòng`), nêu hiện trạng dev, và kết
+bằng **một câu hỏi chung cho cả loại**.
 
 ````markdown
-# Việc bị chặn cần team BA — <phân hệ> (<tên URD>, UC …)
+# Việc bị chặn cần team BA — <phân hệ> (<tên URD>)
 
-<2–3 câu mở đầu: đây là gì, khác gì với decisions.md, cách trả lời.>
+<2–3 câu: bao nhiêu loại vướng, cách đọc, khác gì decisions.md.>
 
-## B-01 · <tiêu đề một dòng> (UCxx ACyy)
+## 1. <Loại vướng>
 
-<URD nói gì / thiếu gì — dẫn BR/AC + `:dòng`. Dev đang tạm làm gì (nếu có).>
+**UC xx: <tên UC nguyên văn>**
+> **ACyy** (`:dòng`): <nguyên văn Giả sử … Khi … Thì …>
+>
+> **BR-xx-yy** <tên BR>: <nguyên văn phần liên quan>
 
-Cần BA: <bỏ khỏi nghiệm thu đợt này, hay cung cấp gì; a/b/c nếu có>.
+**UC zz: <tên UC>**
+> …
+
+Hiện trạng: <dev đang tạm làm gì / vì sao không đi tiếp được>.
+
+**Câu hỏi**: <một câu cho cả loại; lựa chọn a/b/c hoặc danh sách cần cung cấp nếu có>.
 ````
 
 ---
