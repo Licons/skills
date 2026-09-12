@@ -2,6 +2,7 @@
 
 SKILLS_DIR="$(pwd)"
 DEST_SKILLS="/.claude/skills"
+AGENT_SKILLS="/.agent/skills"
 SKILLS=(
   do-urd
   do-test
@@ -27,6 +28,17 @@ for DEST in "${DESTINATIONS[@]}"; do
       echo "Added $PATTERN to $EXCLUDE_FILE"
     fi
   done
+done
+
+for SKILL in "${SKILLS[@]}"; do
+	mkdir -p "$DEST$AGENT_SKILLS"
+	echo "Copying $SKILLS_DIR/$SKILL -> $DEST$AGENT_SKILLS"
+	cp -fr "$SKILLS_DIR/$SKILL" "$DEST$AGENT_SKILLS"
+	PATTERN="**/skills/$SKILL"
+	if ! grep -qF "$PATTERN" "$EXCLUDE_FILE" 2>/dev/null; then
+	  echo "$PATTERN" >> "$EXCLUDE_FILE"
+	  echo "Added $PATTERN to $EXCLUDE_FILE"
+	fi
 done
 
 echo

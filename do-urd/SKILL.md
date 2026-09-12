@@ -83,9 +83,9 @@ metadata:
 
 - **Luôn đối chứng, không suy đoán.**
 - Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
-- Đọc và chạy skill với flag `ak:cook <phase-path> --auto` để chạy từng phase.
-- Chạy cook BE cho tất cả các phase có BE. ⛔ `ApplicationService`/`DomainService` ABP không `sealed` (Castle proxy) — `dotnet-services.md` §Coding Standards.
-- Chạy cook FE cho tất cả các phase có FE (**design layout** dựa trên các file trong `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
+- Tự động điều phối các subagnet model `sonnet` để implement code cho các phase độc lập **không phụ thuộc**, **không chung file**.
+- Chạy implement BE cho tất cả các phase có BE. ⛔ `ApplicationService`/`DomainService` ABP không `sealed` (Castle proxy) — `dotnet-services.md` §Coding Standards.
+- Chạy implement FE cho tất cả các phase có FE (**design layout** dựa trên các file trong `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.
 - **Quy ước tag `@case:`/`@req:` và cách gộp nhiều ca vào một AC**: `.claude/rules/e2e-playwright.md` §*Luật nghiệm thu*. BE giữ tiền tố method `AC<nn>_`, FE Karma nhắc mã AC trong title `it()` — cả hai là **để đọc**, không phải đường truy vết nghiệm thu.
 - Xong cook thì commit Tiếng Anh `cook(<slug>): <phase-NN> <BE/FE> <description>`.
