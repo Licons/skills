@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CLAUDE_PATH=$HOME/.claude
+CODEX_PATH=$HOME/.codex
+OPENCODE_PATH=$HOME/.config/opencode
+AGENT_FILE=AGENTS.md
+
+cp $AGENT_FILE $CLAUDE_PATH
+cp $AGENT_FILE $CODEX_PATH
+cp $AGENT_FILE $OPENCODE_PATH
+
+cp CLAUDE.md $CLAUDE_PATH
+
+echo
+echo "Done!"

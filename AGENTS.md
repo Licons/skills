@@ -15,9 +15,8 @@
 - Role: DEV
 - Email: quacn@utop.io
 
-
 # graphify
 
-- Luôn sử dụng `graphify` để hiểu Codebase.
+- Luôn sử dụng `graphify` để hiểu `codebase`.
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.

@@ -30,16 +30,5 @@ for DEST in "${DESTINATIONS[@]}"; do
   done
 done
 
-for SKILL in "${SKILLS[@]}"; do
-	mkdir -p "$DEST$AGENT_SKILLS"
-	echo "Copying $SKILLS_DIR/$SKILL -> $DEST$AGENT_SKILLS"
-	cp -fr "$SKILLS_DIR/$SKILL" "$DEST$AGENT_SKILLS"
-	PATTERN="**/skills/$SKILL"
-	if ! grep -qF "$PATTERN" "$EXCLUDE_FILE" 2>/dev/null; then
-	  echo "$PATTERN" >> "$EXCLUDE_FILE"
-	  echo "Added $PATTERN to $EXCLUDE_FILE"
-	fi
-done
-
 echo
 echo "Done!"
