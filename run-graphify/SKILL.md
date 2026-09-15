@@ -7,7 +7,31 @@ description: "Use for any question about a codebase, its architecture, file rela
 
 # WORKFLOW
 
-1. Liệt kê danh sách các project BackEnd .NET (csproj) và FrontEnd Angular (để chạy toàn bộ).
-2. Chạy skill `graphify extract <path> --code-only` (new) hoặc `graphify cluster-only <path> --no-viz --no-label --code-only --update` (update) cho từng project - **lưu ý:** timeout cho các project lớn (tự tính).
-3. Merge tất cả các graph lại (dùng `--out`).
-4. Chạy `graphify cluster-only . --no-viz --no-label --graph graphify-out/monorepo-graph.json` nếu chưa có `GRAPH_REPORT.md`
+1. project BE (.csproj) & FE Angular để chạy graphify
+
+- services/Uengage
+- services/administration
+- services/audit-logging
+- services/background-jobs
+- services/chat
+- services/dynamic-report
+- services/file-management
+- services/gdpr
+- services/healthcare
+- services/identity
+- services/integration-hub
+- services/language
+- services/marketing
+- services/notification
+- services/realestate
+- services/shared
+- services/saas (large ~96M, timeout lớn)
+- gateways/gw-3cx
+- gateways/mobile
+- gateways/web
+- apps/auth-server
+- apps/angular (large ~124M, timeout lớn)
+
+2. Chạy `graphify extract <path> --code-only --no-viz --no-label` (new) hoặc `graphify update <path> --code-only --no-viz --no-label` (update)
+3. Merge toàn bộ graph -> graphify-out/monorepo-graph.json (merge-graphs ... --out)
+4. cluster-only .  --code-only --no-viz --no-label --graph graphify-out/monorepo-graph.json (nếu chưa có `GRAPH_REPORT.md`)
