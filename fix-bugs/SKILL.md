@@ -17,7 +17,8 @@ metadata:
 2. Đọc tài liệu URD/UC/AC liên quan `<repo>/../Utop.VietBank.CRM.Documents//outputs/urd/Delivered/Phase 1`
 3. Đọc design layout khi cần `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export`
 4. Compare lại so với `codebase` (dùng `graphify` hoặc scout).
-5. Tạo 1 nhánh mới cho list bugs.
-6. Tạo plan để fix bugs theo từng nhóm UC.
-7. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
-8. Commit code Tiếng Anh.
+5. Cập nhật status sang `In Progress' cho các bugs trên ADO.
+6. Tạo 1 nhánh mới cho list bugs.
+7. Tạo plan để fix bugs theo từng nhóm UC.
+8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
+9. Commit code Tiếng Anh.
