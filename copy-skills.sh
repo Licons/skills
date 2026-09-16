@@ -20,7 +20,7 @@ DESTINATIONS=(
 
 for DEST in "${DESTINATIONS[@]}"; do
   EXCLUDE_FILE="$DEST/.git/info/exclude"
-tee $DEST/apps/angular/e2e-playwright > /dev/null <<EOF
+tee $DEST/apps/angular/e2e-playwright/.env > /dev/null <<EOF
 PW_TENANT=bank
 PW_USER=ho
 PW_PASSWORD=1qaZ2wsX@
