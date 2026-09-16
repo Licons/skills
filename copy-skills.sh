@@ -11,6 +11,7 @@ SKILLS=(
   run-graphify
   test-chrome
   fix-bugs
+  codex-with-chatgpt
 )
 
 DESTINATIONS=(
