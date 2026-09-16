@@ -50,6 +50,8 @@ metadata:
 
 # 3. Workflow
 
+> Tạo to đo để thực hiện cái stage/step sau:
+
 ## Stage 1 - Branch
 
 - `{stamp}` = `yyMMdd-HHmm`, `{slug}`= mã UC hoặc mô tả ngắn gọn (ví dụ: `c360-fr-01-uc01`, `c360-batch1-6uc`).
@@ -83,7 +85,7 @@ metadata:
 
 - **Luôn đối chứng, không suy đoán.**
 - Từ stage này trở đi, **không hỏi/đợi user** nữa - mọi vấn đề -> lưu vào `gaps.md` -> dựa trên `tài liệu URD` + repo tài liệu `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` + scout `codebase` + `graphify` -> **tìm và chọn solution + trade off** tối ưu nhất -> lưu vào `decisions.md`.
-- Tự động điều phối các subagnet model `sonnet` để implement code cho các phase độc lập **không phụ thuộc**, **không chung file**.
+- Tự động điều phối các subagnet model `sonnet` để implement code cho các phase độc lập **không phụ thuộc**, **không chung file**, , **không conflict**.
 - Chạy implement BE cho tất cả các phase có BE. ⛔ `ApplicationService`/`DomainService` ABP không `sealed` (Castle proxy) — `dotnet-services.md` §Coding Standards.
 - Chạy implement FE cho tất cả các phase có FE (**design layout** dựa trên các file trong `<repo-root>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`).
 - **Mỗi AC phải có ca e2e** (Stage 2). BE/FE unit test viết theo nhu cầu của chính nó, không phải để thay e2e.

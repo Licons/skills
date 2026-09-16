@@ -9,6 +9,7 @@ SKILLS=(
   do-e2e
   verify-e2e
   run-graphify
+  test-chrome
 )
 
 DESTINATIONS=(
@@ -19,6 +20,14 @@ DESTINATIONS=(
 
 for DEST in "${DESTINATIONS[@]}"; do
   EXCLUDE_FILE="$DEST/.git/info/exclude"
+tee $DEST/apps/angular/e2e-playwright > /dev/null <<EOF
+PW_TENANT=bank
+PW_USER=ho
+PW_PASSWORD=1qaZ2wsX@
+PW_CLIENT_ID=AngularDev
+PW_HOST_ADMIN_USER=admin
+PW_HOST_ADMIN_PASSWORD=1qaZ2wsX@
+EOF
   for SKILL in "${SKILLS[@]}"; do
     echo "Copying $SKILLS_DIR/$SKILL -> $DEST$DEST_SKILLS"
     cp -fr "$SKILLS_DIR/$SKILL" "$DEST$DEST_SKILLS"
