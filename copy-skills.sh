@@ -10,6 +10,7 @@ SKILLS=(
   verify-e2e
   run-graphify
   test-chrome
+  fix-bugs
 )
 
 DESTINATIONS=(
