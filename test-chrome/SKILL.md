@@ -15,5 +15,5 @@ description: "Test UI/UX in chrome."
 5. Kiểm tra tài liệu AC so sánh với design layout.
 6. Tạo nhánh để fix gap.
 7. Dùng script `localhost.sh` để start/stop/restart các services.
-8. Mở Chrome MCP (FE + design layout file) -> screenshot page + compare lại UI/UX của design.
+8. Mở Chrome MCP (FE + design layout file) -> screenshot full page + compare lại UI/UX của design.
 9. Commit code Tiếng Anh.
