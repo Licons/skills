@@ -7,7 +7,7 @@ description: "Test UI/UX in chrome."
 
 # WORKFLOW
 
-1. Design layout `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/source_dc`
+1. Design layout `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**`.
 2. Đọc `bank-theme` để biết theme đang có.
 3. Lập danh sách các FE-mismatch-design và todo cần phải fix.
 4. Implement FE theo design (element, font, size, color, card, tab/sub-tab, popup, input style, layout, padding, text localization key,...).
