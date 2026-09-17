@@ -7,11 +7,10 @@ description: "Test UI/UX in chrome."
 
 # WORKFLOW
 
-1. Liệt kê các Pages trong link `https://claude.ai/design/p/b285bea9-ab07-46bf-a691-863636fe6edc`
-2. Đọc tài liệu URD/UC/AC liên quan `<repo>/../Utop.VietBank.CRM.Documents//outputs/urd/Delivered/Phase 1`
-3. Đọc `bank-theme` để biết theme đang có.
-4. Tìm các FE-mismatch-design.
-5. Implement FE theo design (element, font, size, color, card, tab/sub-tab, popup, input style, layout, padding, text localization key,...).
-6. Dùng script `localhost.sh` để start/stop/restart các services.
-7. Mở file trong browser qua Chrome DevTools để chụp screenshot visual.
-8. Commit code Tiếng Anh.
+1. Design layout `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/source_dc`
+2. Đọc `bank-theme` để biết theme đang có.
+3. Lập danh sách các FE-mismatch-design và todo cần phải fix.
+4. Implement FE theo design (element, font, size, color, card, tab/sub-tab, popup, input style, layout, padding, text localization key,...).
+5. Dùng script `localhost.sh` để start/stop/restart các services.
+6. Mở file design trong browser qua Chrome DevTools và FE để chụp screenshot visual đối chứng.
+7. Commit code Tiếng Anh.
