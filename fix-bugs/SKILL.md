@@ -13,7 +13,7 @@ metadata:
 
 # Workflow
 
-1. Đọc danh sách các bugs trạng thái 'Todo' trên `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` bằng `az cli`.
+1. Dùng `az cli` để đọc link `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` rồi tổng hợp danh sách bug (không phải Resolved).
 2. Đọc tài liệu URD/UC/AC liên quan `<repo>/../Utop.VietBank.CRM.Documents//outputs/urd/Delivered/Phase 1`
 3. Đọc design layout khi cần `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export`
 4. Compare lại so với `codebase` (dùng `graphify` hoặc scout).
@@ -22,3 +22,4 @@ metadata:
 7. Tạo plan để fix bugs theo từng nhóm UC.
 8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
 9. Commit code Tiếng Anh.
+10. Dùng Chrome MCP để verify lại bugs.
