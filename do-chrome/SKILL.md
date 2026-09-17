@@ -14,7 +14,7 @@ description: "Test UI/UX in chrome."
   font-family, font-size, font-weight, line-height, letter-spacing,
   color, background-color, border, border-radius,
   padding, margin, gap, box-shadow, width/height nếu cố định.
-- Xuất ra design-tokens.json. Dừng cho tôi review.
+- Xuất ra design-tokens.json.
 
 # PHA 2 - Implement/Update
 
