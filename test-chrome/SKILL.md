@@ -13,5 +13,5 @@ description: "Test UI/UX in chrome."
 4. Implement FE theo design (element, font, size, color, card, tab/sub-tab, popup, input style, layout, padding, text localization key,...).
 5. Bỏ/ẩn FE components nếu bị dư so với design. Mockup FE như design nếu chưa có (BE sẽ làm sau).
 6. Dùng script `localhost.sh` để start/stop/restart các services.
-7. Mở file design trong browser qua Chrome DevTools và FE để chụp screenshot visual đối chứng.
+7. Mở file design trong browser qua Chrome DevTools để FE đo trực tiếp với design.
 8. Commit code Tiếng Anh.
