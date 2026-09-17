@@ -26,6 +26,7 @@ description: "Test UI/UX in chrome."
 - Với từng element trong bảng map, lấy computed style cả 2 bên,
 so từng property, xuất bảng: property | design | angular | MATCH/DIFF.
 - Chỉ được báo hoàn thành khi 0 DIFF hoặc DIFF đã được tôi duyệt.
+- Chỉnh sửa xong hết 1 lượt rồi mới cho phép re-build, tránh build loop mất thời gian.
 
 # Kiểm thêm:
 - state: hover, focus, active, disabled (dùng CDP forcePseudoState hoặc dispatch event)
