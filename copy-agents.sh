@@ -1,17 +1,17 @@
 #!/bin/bash
 
-CLAUDE_PATH=$HOME/.claude
-CODEX_PATH=$HOME/.codex
-OPENCODE_PATH=$HOME/.config/opencode
 AGENT_FILE=AGENTS.md
+DESTINATIONS=(
+  $HOME/.claude
+  $HOME/.codex
+  $HOME/.config/opencode
+)
 
-cp $AGENT_FILE $HOME
-
-cp $AGENT_FILE $CLAUDE_PATH
-cp $AGENT_FILE $CODEX_PATH
-cp $AGENT_FILE $OPENCODE_PATH
-
-cp CLAUDE.md $CLAUDE_PATH
+cp -v CLAUDE.md $HOME/.claude
+for DEST in "${DESTINATIONS[@]}"; do
+    mkdir -p $DEST
+    cp -v $AGENT_FILE $DEST
+done
 
 echo
 echo "Done!"
