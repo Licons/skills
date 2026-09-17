@@ -9,7 +9,7 @@ metadata:
   version: "1.0.0"
 ---
 
-> Tạo todo để thực hiện các workflow dưới đây.
+> Tạo Todo/Monitor để thực hiện các workflow dưới đây.
 
 # Workflow
 

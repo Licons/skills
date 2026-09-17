@@ -3,7 +3,7 @@ name: test-chrome
 description: "Test UI/UX in chrome."
 ---
 
-> Tạo Todo để thực hiện tất cả công việc trong Workflow sau.
+> Tạo Todo/Monitor để thực hiện tất cả công việc trong Workflow sau.
 
 # WORKFLOW
 
