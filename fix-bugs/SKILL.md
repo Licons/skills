@@ -22,4 +22,3 @@ metadata:
 7. Tạo plan để fix bugs theo từng nhóm UC.
 8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
 9. Commit code Tiếng Anh.
-10. Cập nhật status sang `Resolved' cho các bugs trên ADO.
