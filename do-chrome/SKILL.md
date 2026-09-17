@@ -18,9 +18,11 @@ description: "Test UI/UX in chrome."
 
 # PHA 2 - Implement/Update
 
+- Design bị lỗi *Ngôn ngữ* nên có thể dịch ra để đối chiếu lại Angular.
 - Implement Angular theo tokens.json (không tự chế giá trị) - cập nhật lại vào `bank-theme`.
 - Ẩn những thứ design không mô tả, tạo mới những cái chưa có.
 - Đọc tài liệu `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` để implement BE (nếu có), không có BE thì mockup UI cho Angular.
+- Mọi quyết định bám trên design trước, **không** tự quyết định hoặc **hỏi** user.
 
 # PHA 3 — Verify:
 
