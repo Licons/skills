@@ -1,0 +1,31 @@
+---
+name: do-chrome
+description: "Test UI/UX in chrome."
+---
+
+CÓ CHROME MCP -> bắt buộc verify trước khi báo xong.
+
+# PHA 1 - Trích token từ DESIGN (không đọc CSS bằng mắt):
+
+- Mở file `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**.html` trong Chrome.
+- Với mỗi element chính (heading, body, button, card, tab, input, badge):
+  chạy getComputedStyle() và ghi lại:
+  font-family, font-size, font-weight, line-height, letter-spacing,
+  color, background-color, border, border-radius,
+  padding, margin, gap, box-shadow, width/height nếu cố định.
+- Xuất ra design-tokens.json. Dừng cho tôi review.
+
+# PHA 2 - Implement/Update
+
+- Implement Angular theo tokens.json (không tự chế giá trị) - cập nhật lại vào `bank-theme`.
+
+# PHA 3 — Verify:
+
+- Mở lại 2 tab: design-export và localhost:4200/<route>.
+- Với từng element trong bảng map, lấy computed style cả 2 bên,
+so từng property, xuất bảng: property | design | angular | MATCH/DIFF.
+- Chỉ được báo hoàn thành khi 0 DIFF hoặc DIFF đã được tôi duyệt.
+
+# Kiểm thêm:
+- state: hover, focus, active, disabled (dùng CDP forcePseudoState hoặc dispatch event)
+- tab/accordion: chụp computed style ở từng trạng thái đóng/mở

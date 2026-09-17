@@ -7,6 +7,7 @@ SKILLS=(
   do-urd
   do-test
   do-e2e
+  do-chrome
   verify-e2e
   run-graphify
   test-chrome
