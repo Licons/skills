@@ -7,7 +7,7 @@ description: "Test UI/UX in chrome."
 
 # WORKFLOW
 
-1. Đọc chi tiết design layout `https://claude.ai/design/p/b285bea9-ab07-46bf-a691-863636fe6edc`
+1. Liệt kê các Pages trong link `https://claude.ai/design/p/b285bea9-ab07-46bf-a691-863636fe6edc`
 2. Đọc tài liệu URD/UC/AC liên quan `<repo>/../Utop.VietBank.CRM.Documents//outputs/urd/Delivered/Phase 1`
 3. Đọc `bank-theme` để biết theme đang có.
 4. Tìm các FE-mismatch-design.
