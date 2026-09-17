@@ -3,7 +3,8 @@ name: do-chrome
 description: "Test UI/UX in chrome."
 ---
 
-CÓ CHROME MCP -> bắt buộc verify trước khi báo xong.
+> Tạo Todo/Monitor để theo dõi tiến độ.
+> CÓ CHROME MCP -> bắt buộc verify trước khi báo xong.
 
 # PHA 1 - Trích token từ DESIGN (không đọc CSS bằng mắt):
 
