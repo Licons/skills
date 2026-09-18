@@ -8,6 +8,7 @@ description: "Test UI/UX in chrome."
 
 # PHA 1 - Trích token từ DESIGN (không đọc CSS bằng mắt):
 
+- Tạo nhánh mới.
 - Mở file `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**.html` trong Chrome.
 - Với mỗi element chính (heading, body, button, card, tab, input, badge):
   chạy getComputedStyle() và ghi lại:
