@@ -22,6 +22,7 @@ DESTINATIONS=(
 )
 
 for DEST in "${DESTINATIONS[@]}"; do
+  mkdir -p $DEST
   EXCLUDE_FILE="$DEST/.git/info/exclude"
 tee $DEST/apps/angular/e2e-playwright/.env > /dev/null <<EOF
 PW_TENANT=bank
