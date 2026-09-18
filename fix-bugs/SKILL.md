@@ -14,7 +14,7 @@ metadata:
 # Workflow
 
 1. Dùng `az cli` để đọc link `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` rồi tổng hợp danh sách bug (không phải Resolved).
-2. Đọc tài liệu URD/UC/AC source liên quan trong plan.
+2. Đọc tài liệu URD/UC/AC source liên quan trong folder plan.
 3. Đọc design layout khi cần `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export`.
 4. Compare lại so với `codebase` (dùng `graphify` hoặc scout).
 5. Cập nhật status sang `In Progress' cho các bugs trên ADO.
