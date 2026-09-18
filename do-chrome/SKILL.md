@@ -27,6 +27,7 @@ description: "Test UI/UX in chrome."
 
 # PHA 3 — Verify:
 
+- Kiểm tra môi trường, dùng `localhost.sh` để start/restart những service cần dùng.
 - Mở lại 2 tab: design-export và localhost:4200/<route>.
 - Với từng element trong bảng map, lấy computed style cả 2 bên,
 so từng property, xuất bảng: property | design | angular | MATCH/DIFF.
