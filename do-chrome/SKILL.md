@@ -36,5 +36,6 @@ description: "Test UI/UX in chrome."
 - Chỉnh sửa xong hết 1 lượt rồi mới cho phép re-build, tránh build loop mất thời gian.
 
 # Kiểm thêm:
-- state: hover, focus, active, disabled (dùng CDP forcePseudoState hoặc dispatch event)
-- tab/accordion: chụp computed style ở từng trạng thái đóng/mở
+- state: hover, focus, active, disabled (dùng CDP forcePseudoState hoặc dispatch event).
+- tab/accordion: chụp computed style ở từng trạng thái đóng/mở.
+- design version theo phân hệ trong function notes: cập nhật lại theo design file.
