@@ -10,7 +10,6 @@ SKILLS=(
   do-chrome
   verify-e2e
   run-graphify
-  test-chrome
   fix-bugs
   codex-with-chatgpt
 )

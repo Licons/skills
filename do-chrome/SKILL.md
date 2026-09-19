@@ -12,16 +12,18 @@ description: "Test UI/UX in chrome."
 - Mở file `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**.html` trong Chrome.
 - Với mỗi element chính (heading, body, button, card, tab, input, badge):
   chạy getComputedStyle() và ghi lại:
-  font-family, font-size, font-weight, line-height, letter-spacing,
-  color, background-color, border, border-radius,
+  layout, panel, card, tab, button, popup, tooltip, badge, sidebar,
+  font-family, font-size, font-weight, font-color, font icon, line-height, letter-spacing,
+  color, background-color, border, border-radius, border-color,
   padding, margin, gap, box-shadow, width/height nếu cố định.
-- Xuất ra design-tokens.json.
+- Xuất ra `design-tokens.json`. Thông tin tới user.
 
 # PHA 2 - Implement/Update
 
-- Design bị lỗi *Ngôn ngữ* nên có thể dịch ra để đối chiếu lại Angular.
-- Implement Angular theo tokens.json (không tự chế giá trị) - cập nhật lại vào `bank-theme`.
-- Ẩn những thứ design không mô tả, tạo mới những cái chưa có.
+- Design *có thể* bị lỗi *Ngôn ngữ* (không đồng bộ) nên có thể dịch ra theo localization để đối chiếu lại Angular.
+- Kiểm tra lại `localization` trên toàn trang để chuẩn hóa (fix hardcode text).
+- Implement Angular theo `tokens.json` (không tự chế giá trị) - cập nhật lại vào `bank-theme`.
+- FE angular sẽ ẩn những thứ design không mô tả, tạo mới/mockup cái mới theo design.
 - Đọc tài liệu `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/**` để implement BE (nếu có), không có BE thì mockup UI cho Angular.
 - Mọi quyết định bám trên design trước, **không** tự quyết định hoặc **hỏi** user.
 
@@ -29,8 +31,7 @@ description: "Test UI/UX in chrome."
 
 - Kiểm tra môi trường, dùng `localhost.sh` để start/restart những service cần dùng.
 - Mở lại 2 tab: design-export và localhost:4200/<route>.
-- Với từng element trong bảng map, lấy computed style cả 2 bên,
-so từng property, xuất bảng: property | design | angular | MATCH/DIFF.
+- Với từng element trong bảng map, lấy computed style cả 2 bên, so từng property, xuất bảng: property | design | angular | MATCH/DIFF.
 - Chỉ được báo hoàn thành khi 0 DIFF hoặc DIFF đã được tôi duyệt.
 - Chỉnh sửa xong hết 1 lượt rồi mới cho phép re-build, tránh build loop mất thời gian.
 
