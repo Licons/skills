@@ -12,7 +12,7 @@ description: "Test UI/UX in chrome."
 - Mở file `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export/**.html` trong Chrome.
 - Với mỗi element chính (heading, body, button, card, tab, input, badge):
   chạy getComputedStyle() và ghi lại:
-  layout, panel, card, tab, button, popup, tooltip, badge, sidebar,
+  LOV, layout, panel, card, tab, button, popup, tooltip, badge, sidebar,
   font-family, font-size, font-weight, font-color, font icon, line-height, letter-spacing,
   color, background-color, border, border-radius, border-color,
   padding, margin, gap, box-shadow, width/height nếu cố định.
