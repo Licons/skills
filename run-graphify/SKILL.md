@@ -7,7 +7,7 @@ description: "Use for any question about a codebase, its architecture, file rela
 
 # WORKFLOW
 
-1. project BE (.csproj) & FE Angular để chạy graphify
+1. Danh sách project BE (.csproj) & FE Angular để chạy graphify
 
 - services/Uengage
 - services/administration
@@ -25,13 +25,13 @@ description: "Use for any question about a codebase, its architecture, file rela
 - services/notification
 - services/realestate
 - services/shared
-- services/saas (large ~96M, timeout lớn)
+- services/saas (large, timeout lớn)
 - gateways/gw-3cx
 - gateways/mobile
 - gateways/web
 - apps/auth-server
-- apps/angular (large ~124M, timeout lớn)
+- apps/angular (large, timeout lớn)
 
-2. Chạy `graphify extract <path> --code-only --no-viz --no-label` (new) hoặc `graphify update <path> --no-cluster --no-viz --no-label` (update)
+2. **Bắt đầu** chạy `graphify extract <path> --code-only --no-viz --no-label` (new) hoặc `graphify update <path> --no-cluster --no-viz --no-label` (update)
 3. Merge toàn bộ graph -> graphify-out/monorepo-graph.json (merge-graphs ... --out)
 4. Chạy `graphify cluster-only . --code-only --no-viz --no-label --graph graphify-out/monorepo-graph.json`
