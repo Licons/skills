@@ -1,5 +1,5 @@
 ---
-name: fix-bugs
+name: do-bugs
 description: "Sử dụng để thực hiện fix các bugs trên ADO"
 category: workflow
 keywords: [fix,bugs,ado]

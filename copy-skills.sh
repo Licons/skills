@@ -8,10 +8,8 @@ SKILLS=(
   do-test
   do-e2e
   do-chrome
-  verify-e2e
+  do-bugs
   run-graphify
-  fix-bugs
-  codex-with-chatgpt
 )
 
 DESTINATIONS=(
