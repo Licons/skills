@@ -31,6 +31,7 @@ PW_HOST_ADMIN_PASSWORD=1qaZ2wsX@
 EOF
   for SKILL in "${SKILLS[@]}"; do
     echo "Copying $SKILLS_DIR/$SKILL -> $DEST$DEST_SKILLS"
+    mkdir -p $DEST$DEST_SKILLS
     cp -fr "$SKILLS_DIR/$SKILL" "$DEST$DEST_SKILLS"
     PATTERN="**/skills/$SKILL"
     if ! grep -qF "$PATTERN" "$EXCLUDE_FILE" 2>/dev/null; then
