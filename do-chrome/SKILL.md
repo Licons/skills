@@ -36,6 +36,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 # PHA 2 — Implement
 
+* Tạo plan để implement.
 * Implement Angular theo design + `design-tokens.json`.
 * Follow project conventions; không refactor unrelated code.
 * Localization/docs là source of truth cho text/business.
