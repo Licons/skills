@@ -5,6 +5,7 @@ description: "Test UI/UX in chrome."
 
 > Tạo Todo/Monitor để theo dõi tiến độ.
 > CÓ CHROME MCP -> bắt buộc verify trước khi báo xong.
+> CÓ browser_use -> double check
 > Nhiều tab/màn trong 1 lượt -> xử lý TUẦN TỰ, không song song (hay dùng chung file: localization,
 > ModelSnapshot, component shared).
 
