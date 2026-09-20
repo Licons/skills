@@ -16,7 +16,6 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 > Tạo Todo/Monitor theo dõi tiến độ.
 > Có Chrome MCP → bắt buộc verify trước khi báo xong.
-> Có browser_use → double-check.
 > Nhiều tab/màn → làm TUẦN TỰ, không song song nếu dùng shared files.
 
 # PHA 1 — Inspect DESIGN
@@ -36,7 +35,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 # PHA 2 — Implement
 
-* Tạo plan để implement.
+* Tạo nhánh + plan để implement.
 * Implement Angular theo design + `design-tokens.json`.
 * Follow project conventions; không refactor unrelated code.
 * Localization/docs là source of truth cho text/business.
