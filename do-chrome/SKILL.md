@@ -40,7 +40,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 * Implement Angular theo design + `design-tokens.json`.
 * Follow project conventions; không refactor unrelated code.
 * Localization/docs là source of truth cho text/business.
-* Không xoá/ẩn feature hiện có chỉ vì design không thể hiện, trừ khi scope/docs xác nhận.
+* Chỉ ẩn feature hiện có nếu design không thể hiện.
 * Không có BE → mock tối thiểu đủ render hoặc AskUserQuestion; không tự suy schema/API/business rule.
 * UI conflict → theo design.
 * Business/schema/security chưa rõ → AskUserQuestion; không hỏi được thì ghi GAP, không tự quyết.
