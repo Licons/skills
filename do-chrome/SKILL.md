@@ -13,6 +13,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 * Icon/image/SVG phải đúng identity/source; không dùng cái "gần giống".
 * Known `DIFF` chưa được duyệt = chưa xong.
 * Không bịa đã hỏi/đã chốt/đã được duyệt.
+* Không suy đoán mà dựa trên DOM Design
 
 > Tạo Todo/Monitor theo dõi tiến độ.
 > Có Chrome MCP → bắt buộc verify trước khi báo xong.
