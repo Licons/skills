@@ -1,12 +1,7 @@
 ---
 name: do-bugs
-description: "Sử dụng để thực hiện fix các bugs trên ADO"
+description: "Sử dụng để thực hiện quy trình fix các bugs trên ADO"
 category: workflow
-keywords: [fix,bugs,ado]
-argument-hint: ""
-metadata:
-  author: utop
-  version: "1.0.0"
 ---
 
 > Tạo Todo/Monitor để thực hiện các workflow dưới đây.
