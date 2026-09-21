@@ -1,0 +1,68 @@
+{
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(docker:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(az:*)",
+      "Bash(az boards work-item update:*)",
+      "Bash(az boards work-item create:*)",
+      "Bash(az repos pr create:*)",
+      "Bash(az repos pr work-item add:*)"
+    ]
+  },
+  "model": "opus",
+  "fallbackModel": [
+    "sonnet"
+  ],
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "modelSettings": {
+    "claude-sonnet-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "theme": "dark",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(dotnet ef database update:*) — CLAUDE.md explicitly forbids automated DB-mutating commands against QA/production",
+      "Bash(sqlcmd:*) when used with DROP/DELETE/UPDATE/ALTER/TRUNCATE/INSERT — project rule bans automated DB mutation via sqlcmd",
+      "Bash(*/start-be.ps1:*) — CLAUDE.md documents this script force-kills all dotnet/node/powershell processes including the agent's own shell"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: assume private (Azure DevOps org repo `dev.azure.com/_git/Utop.VietBank.CRM`; gh visibility check not queryable for a non-GitHub host — inferred, not confirmed)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured — repo contains numerous `appsettings.secrets.json` / `.env` / `.env.example` paths (see Sensitive data locations) but no external secrets manager is evidenced",
+      "**Default / protected branches**: `main` is the default branch (repo facts); branch protection / rulesets not queryable here (gh check unsupported for this host) — treat `main` as protected by convention pending confirmation",
+      "**CI/CD deploy targets**: None configured — repo references Azure Pipelines (`azure-pipelines/**`) and a GitOps target repo `vietbank-gitopp/vb-crm-gitops` mentioned in README, but this is repo-authored doc content, not corroborated by usage evidence — not adopted as a trusted deploy target",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: The trusted repo (`Utop.VietBank.CRM`, remote `https://dev.azure.com/_git/Utop.VietBank.CRM`) and its configured remote(s) only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured — `gitlab.com` appears in package registry host scan but is repo-authored config content only, not usage-corroborated, so not adopted as trusted",
+      "**Sensitive data locations & audiences**: `appsettings.secrets.json` files across all services/gateways (e.g. `services/saas/FPTCXSuite.SaasService/appsettings.secrets.json`, `services/identity/...`, `gateways/web/FPTCXSuite.WebGateway/appsettings.secrets.json`, etc.), `.env` / `.env.example` files project-wide, `etc/helm/create-tls-secrets.ps1`, `etc/docker/seaweedfs/qa-k8s-*.yaml`, `scripts/db/seed-sec-field-classifications.sql`, `docs/deployment-guide-vietbank-k8s.md` — share only with audiences cleared per the project's own security/compliance docs (e.g. `docs/compliance-tt09-nd13-technical-evidence.md`)",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word/segment; also treat the QA database host referenced in project docs (`Server=20.6.73.20`, `vb-crm-qa`) as a sensitive remote target given CLAUDE.md's explicit warning that default local config silently writes to QA on startup",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic (includes the QA DB noted above)",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (ABP/.NET + Angular multi-tenant CRM platform, per CLAUDE.md)",
+      "**Trusted repo**: `/home/quacn/Projects/VietBank/Utop.VietBank.CRM` (working directory) and its remote `https://dev.azure.com/_git/Utop.VietBank.CRM`",
+      "**Org-specific CLIs**: None configured — project scripts (`dotnet`, `yarn`, PowerShell scripts like `start-be.ps1`, `use-local-db.ps1`) are project tooling, not org-wide CLIs",
+      "**Routine work locations**: services/**, apps/angular/**, docs/**, scripts/** prefixes within this repo is standard project work per CLAUDE.md and .claude/rules/*"
+    ]
+  }
+}
