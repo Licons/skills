@@ -17,7 +17,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 > Tạo Todo/Monitor theo dõi tiến độ.
 > Có Chrome MCP → bắt buộc verify trước khi báo xong.
-> Đối chiếu DOM HTML → bắt buộc để verify đủ các thành phần như design.
+> Đối chiếu DOM HTML → bắt buộc verify đủ các thành phần như design.
 > Nhiều tab/màn → làm TUẦN TỰ, không song song nếu dùng shared files.
 
 # PHA 1 — Inspect DESIGN
