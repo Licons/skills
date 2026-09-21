@@ -23,4 +23,4 @@ metadata:
 8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau. Comment chi tiết vào `Discussion` nếu không phải bug của code (dẫn chứng nguyên văn URD/UC/AC/BR).
 9. Commit code Tiếng Anh.
 10. Dùng Chrome MCP để verify lại bugs.
-11. Chụp ảnh và comment vào bugs.
+11. `Screenshot` kết quả và comment lại vào bugs.
