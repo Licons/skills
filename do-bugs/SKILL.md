@@ -20,7 +20,8 @@ metadata:
 5. Cập nhật status sang `In Progress` cho các bugs trên ADO.
 6. Tạo 1 nhánh mới cho list bugs.
 7. Tạo plan để fix bugs theo từng nhóm UC.
-8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau. Comment chi tiết vào `Discussion` nếu không phải bug của code (dẫn chứng nguyên văn URD/UC/AC/BR).
-9. Commit code Tiếng Anh.
-10. Dùng Chrome MCP để verify lại bugs.
-11. `Screenshot` kết quả và comment lại vào bugs.
+8. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
+9. Comment chi tiết vào `Discussion` nếu không phải bug của code (dẫn chứng nguyên văn URD/UC/AC/BR).
+10. Commit code Tiếng Anh.
+11. Dùng Chrome MCP để verify lại bugs.
+12. `Screenshot` kết quả và `nhúng` vào `comment` của bugs.
