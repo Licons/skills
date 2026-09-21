@@ -20,8 +20,8 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 # PHA 1 — Inspect DESIGN
 
-* Đọc README/changelog trước khi tin version theo tên file.
-* Mở design HTML trong Chrome.
+* Đọc README/changelog/docs trước khi tin version theo tên file.
+* Mở design HTML (`<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export`) trong Chrome.
 * Inventory: text, icon, image, card, tab, input, badge, divider, helper text, popup, sidebar, decoration, `::before/::after`, states.
 * Dùng `getComputedStyle()` + `getBoundingClientRect()` + screenshot; không đoán CSS bằng mắt.
 * Kiểm tra khi relevant:
