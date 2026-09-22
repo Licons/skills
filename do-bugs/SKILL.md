@@ -19,7 +19,7 @@ category: workflow
 7. Tạo 1 nhánh mới cho list bugs.
 8. Tạo plan để fix bugs theo từng nhóm UC.
 9. Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
-10. Comment chi tiết vào `Discussion` nếu không phải bug của code (dẫn chứng nguyên văn URD/UC/AC/BR).
+10. Comment bằng HTML chi tiết cho người đọc vào `Discussion` nếu không phải bug của code (dẫn chứng nguyên văn URD/UC/AC/BR).
 11. Commit code Tiếng Anh.
 12. Dùng Chrome MCP để verify lại bugs.
 13. `Screenshot` kết quả và `nhúng` vào `comment` của bugs.
