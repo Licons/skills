@@ -54,10 +54,11 @@ description: "Implement and verify Angular UI against exported HTML design using
 * Mở design + localhost cùng viewport/state.
 * Verify theo thứ tự:
 
-1. **Coverage** — mọi design element có counterpart.
-2. **Structure** — text/order/icon/assets đúng.
-3. **Computed style** — geometry/style bằng Chrome.
-4. **Screenshot** — check tổng thể cuối cùng.
+1. **Coverage** FE với Design — mọi design element có counterpart.
+2. **Structure** FE với Design — text/order/icon/assets đúng.
+3. **Computed style** FE với Design — geometry/style bằng Chrome.
+4. **Screenshot** 2 ảnh FE với Design — check tổng thể cuối cùng.
+5. **DOM HTML** FE với Design - check số trường element, text.
 
 * Property đo được → đo, không kết luận bằng cảm giác.
 * `"looks good"`, `"close enough"`, `"mostly match"` không phải verify.
