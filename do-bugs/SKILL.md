@@ -13,8 +13,8 @@ category: workflow
 3. Đọc lại design theo Bugs trong `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export` + docs.
 4. Compare lại so với `codebase` (dùng `graphify` hoặc scout).
 5. Xác định lại đó là Bugs hay là GAP.
-  - Nếu là GAP thì comment dẫn chứng URD/Design.
   - Nếu là Bugs thì tìm root cause của nó.
+  - Nếu là GAP thì AskUserQuestion dẫn chứng URD/Design.
 6. Cập nhật status sang `In Progress` cho các bugs có root cause trên ADO.
 7. Tạo 1 nhánh mới cho list bugs.
 8. Tạo plan để fix bugs theo từng nhóm UC.

@@ -34,6 +34,7 @@ description: "Implement and verify Angular UI against exported HTML design using
   * font family/size/weight/color/line-height
   * background, border, radius, shadow
   * icon/SVG source, size, fill/stroke
+  * dialog, button, popup, tooltip, datagrid
 * Token global đo 1 lần; khác theo tab/state thì ghi variant.
 * Xuất `design-tokens.json`.
 
