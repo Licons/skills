@@ -8,6 +8,8 @@ category: workflow
 
 # Workflow
 
+> **Không** tự ý chuyển trạng thái Bugs sang `Resolved`
+
 1. Dùng `az cli` để đọc link `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` rồi tổng hợp danh sách bug (không phải `Resolved`).
 2. Đọc tài liệu URD/UC/AC/BR theo Bugs trong `<repo>/..//home/quacn/Projects/VietBank/Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/`.
 3. Đọc lại design theo Bugs trong `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export` + docs.
