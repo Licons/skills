@@ -15,7 +15,7 @@
       "Bash(az repos pr work-item add:*)"
     ]
   },
-  "model": "opus",
+  "model": "sonnet",
   "fallbackModel": [
     "sonnet"
   ],
@@ -24,7 +24,7 @@
   },
   "modelSettings": {
     "claude-sonnet-5": {
-      "effortLevel": "medium"
+      "effortLevel": "max"
     }
   },
   "theme": "dark",
