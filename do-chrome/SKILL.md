@@ -52,7 +52,7 @@ description: "Implement and verify Angular UI against exported HTML design using
 
 * Start/restart bằng `localhost.sh`; không kill tay.
 * Mở design + localhost cùng viewport/state.
-* Verify theo thứ tự:
+* Liệt kê và verify theo thứ tự:
 
 1. **Coverage** FE với Design — mọi design element có counterpart.
 2. **Structure** FE với Design — text/order/icon/assets đúng.

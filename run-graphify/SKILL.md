@@ -32,6 +32,6 @@ description: "Use for any question about a codebase, its architecture, file rela
 - apps/auth-server
 - apps/angular (large, timeout lớn)
 
-2. **Bắt đầu** chạy `graphify extract <path> --code-only --no-viz --no-label` (new) hoặc `graphify update <path> --no-cluster --no-viz --no-label` (update)
+2. **Bắt đầu** chạy `graphify extract <path> --code-only --no-viz --no-label` (new) hoặc `graphify update <path> --no-cluster` (update)
 3. Merge toàn bộ graph -> graphify-out/monorepo-graph.json (merge-graphs ... --out)
 4. Chạy `graphify cluster-only . --code-only --no-viz --no-label --graph graphify-out/monorepo-graph.json`
