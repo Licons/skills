@@ -11,6 +11,10 @@ description: "Implement and verify Angular UI against exported HTML design using
 * Mỗi element design phải có counterpart trên FE; thiếu = `DIFF`.
 * Không silently bỏ text, icon, divider, helper text, decoration, state.
 * Icon/image/SVG phải đúng identity/source; không dùng cái "gần giống".
+* Element có `::before/::after`/decoration KHÔNG cắm logic thật (vd chevron sort chỉ trang trí, click
+  không đổi thứ tự) vẫn phải verify **sự hiện diện thị giác** riêng — đừng suy "không tồn tại" từ
+  "bấm không phản ứng". Hành vi và hiển thị là hai câu hỏi khác nhau (đã bỏ sót sort-icon một lần vì
+  chỉ test hành vi, 23/09).
 * Known `DIFF` chưa được duyệt = chưa xong.
 * Không bịa đã hỏi/đã chốt/đã được duyệt.
 * Không suy đoán mà dựa trên DOM Design.
@@ -20,6 +24,17 @@ description: "Implement and verify Angular UI against exported HTML design using
 > Có Chrome MCP → bắt buộc verify trước khi báo xong.
 > Đối chiếu DOM HTML → bắt buộc verify đủ các thành phần như design.
 > Nhiều tab/màn → làm TUẦN TỰ, không song song nếu dùng shared files.
+
+# PHA 0 — Scout hiện trạng (trước khi giả định "làm mới")
+
+* Grep route/component đã tồn tại chưa (`route.provider.ts`, `app-routing.module.ts`, `git log` trên
+  thư mục màn) trước khi coi task là build-from-scratch — nhiều màn "cần adopt" thực ra đã có PR
+  trước đó, việc thật là audit + vá lỗ hổng, không phải viết lại.
+* Màn/dropdown/danh sách hiện **TRỐNG** ≠ thiếu dữ liệu. Query DB trực tiếp (read-only) trước khi
+  viết seed: có thể data đã seed sẵn nhưng bị lọc sai (enum/Kind/status không hợp lệ) — sửa 1 dòng
+  bug lộ ra cả kho dữ liệu, đỡ hẳn việc bịa data mới.
+* Field/tham số hiện **sai loại control** (số/input mù trên dữ liệu dạng khác) → nghi kiểu dữ liệu
+  (JSON/enum) chưa có nhánh render, không phải thiếu style.
 
 # PHA 1 — Inspect DESIGN
 
@@ -37,6 +52,10 @@ description: "Implement and verify Angular UI against exported HTML design using
   * dialog, button, popup, tooltip, datagrid
 * Token global đo 1 lần; khác theo tab/state thì ghi variant.
 * Xuất `design-tokens.json`.
+* Dữ liệu mẫu trong HTML design (mã/tên) có thể KHÔNG khớp danh mục thật đã seed trong DB (design
+  là bundle demo độc lập, không đọc từ hệ thống). Đối chiếu mã/tên với DB thật trước khi seed theo
+  y nguyên design — lệch thì map theo Ý NGHĨA gần nhất và ghi rõ, đừng tự thêm danh mục mới nếu
+  danh mục đó vốn read-only/hệ thống.
 
 # PHA 2 — Implement
 
@@ -58,11 +77,19 @@ description: "Implement and verify Angular UI against exported HTML design using
 1. **Coverage** FE với Design — mọi design element có counterpart.
 2. **Structure** FE với Design — text/order/icon/assets đúng.
 3. **Computed style** FE với Design — geometry/style bằng Chrome.
-4. **Screenshot** 2 ảnh FE với Design — check tổng thể cuối cùng.
+4. **Screenshot** 2 ảnh FE với Design — check tổng thể cuối cùng. Chụp **full viewport trước**; chỉ
+   crop theo node SAU khi đã nghi ngờ cụ thể — crop quá nhỏ (vd <20px cạnh) có thể cắt mất icon nhỏ
+   (10-13px) nằm ngoài khung crop, dẫn tới kết luận sai "không có".
 5. **DOM HTML** FE với Design - check số trường element, text.
 
 * Property đo được → đo, không kết luận bằng cảm giác.
 * `"looks good"`, `"close enough"`, `"mostly match"` không phải verify.
+* Sửa xong một field/component: verify **CẢ 2 chiều** — đọc (render đúng) VÀ ghi (bấm Lưu, reload,
+  còn đúng không). Chỉ render đúng mà chưa sờ tới đường lưu là verify một nửa; hay gặp nhất ở field
+  kiểu JSON/phức hợp nơi FE và BE serialize khác nhau.
+* Thêm khoá localization mới → PHẢI rebuild + restart service phục vụ `application-localization`
+  (thường là `administration`, xem `dotnet-services.md`) rồi mới verify Chrome — quên bước này cho
+  kết quả y hệt "thiếu khoá" (hiện chuỗi thô) dù JSON đã đúng, dễ tưởng nhầm là lỗi khác.
 
 Loop bắt buộc:
 
