@@ -23,7 +23,7 @@ category: workflow
 - Liệt kê ngắn gọn thông tin bugs và cách fix, AskUserQuestion để tiếp tục.
 - Tạo plan để fix bugs theo từng nhóm UC.
 - Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
-- Commit code Tiếng Anh + push.
+- Commit code Tiếng Anh + push + gắn workitems.
 - Dùng Chrome MCP để verify lại bugs.
 - `Screenshot` kết quả và `nhúng` vào `comment` của bugs.
 
