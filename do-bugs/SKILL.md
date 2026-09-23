@@ -29,8 +29,8 @@ category: workflow
 
 # Template cho Comment
 
-```
-*root cause*: <description>
-*verify*: <screenshot>
+```html
+<strong>Root Cause<strong>: mô tả ngắn gọn
+<strong>Verify</strong>: <img /> < hình screenshot
 
 ```
