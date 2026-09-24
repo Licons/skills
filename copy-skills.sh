@@ -21,6 +21,7 @@ DESTINATIONS=(
 for DEST in "${DESTINATIONS[@]}"; do
   mkdir -p $DEST
   EXCLUDE_FILE="$DEST/.git/info/exclude"
+
 tee $DEST/apps/angular/e2e-playwright/.env > /dev/null <<EOF
 PW_TENANT=bank
 PW_USER=ho
@@ -29,6 +30,16 @@ PW_CLIENT_ID=AngularDev
 PW_HOST_ADMIN_USER=admin
 PW_HOST_ADMIN_PASSWORD=1qaZ2wsX@
 EOF
+
+tee $DEST/.env > /dev/null <<EOF
+WH_ID=
+WH_TOKEN=
+QA_DB_PASSWORD=Vb#Crm#2026!
+QA_DB_SERVER=20.6.73.20
+QA_DB_NAME=vbb-crm-qa-qc
+QA_DB_USER=u_saas_service
+EOF
+
   for SKILL in "${SKILLS[@]}"; do
     echo "Copying $SKILLS_DIR/$SKILL -> $DEST$DEST_SKILLS"
     mkdir -p $DEST$DEST_SKILLS
