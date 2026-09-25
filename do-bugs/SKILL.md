@@ -18,9 +18,9 @@ category: workflow
 - Compare lại so với `codebase` (dùng `graphify` hoặc scout).
 - Xác định lại đó là Bugs hay là GAP.
   - Nếu là Bugs thì tìm `root cause` của nó.
-  - Nếu là GAP thì dẫn chứng nguyên văn URD/Design.
+  - Nếu là GAP thì dẫn chứng nguyên văn URD/Design vào file GAP.
 - Cập nhật status sang `In Progress` cho các bugs có `root cause` trên ADO.
-- Liệt kê ngắn gọn thông tin bugs và cách fix, AskUserQuestion để tiếp tục.
+- Liệt kê ngắn gọn thông tin bugs và cách fix, `AskUserQuestion` để tiếp tục.
 - Tạo plan để fix bugs theo từng nhóm UC.
 - Fix bugs từng nhóm, nhóm dễ nhất, phức tạp sau.
 - Commit code Tiếng Anh + push + gắn workitems.
@@ -32,5 +32,4 @@ category: workflow
 ```html
 <strong>Root Cause<strong>: mô tả ngắn gọn
 <strong>Verify</strong>: <img /> < hình screenshot
-
 ```
