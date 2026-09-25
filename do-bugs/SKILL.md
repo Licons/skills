@@ -10,7 +10,7 @@ category: workflow
 > **Không** tự ý chuyển trạng thái Bugs sang `Resolved`
 
 - Tạo nhánh `fix/ado-{stamp}`.
-- Dùng `az cli` để đọc link `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` để liệt kê danh sách bug (không phải `Resolved`).
+- Dùng `az cli` để đọc link `https://dev.azure.com/Loyalstar/VietBank/_queries/query/a8e0b97f-e38b-4beb-96cc-a41ad562c618/` để liệt kê danh sách bug (không phải `Resolved`, `Removed`).
 - Phân loại bugs `severity` + phân hệ + UC.
 - Đọc thông tin của bugs (Repro Steps + AC + Discussion + Attachment)
 - Đọc lại design theo Bugs trong `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1/CRM UI Design (Scope)/PREVIEW_export` + docs.
