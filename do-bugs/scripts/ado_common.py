@@ -29,8 +29,21 @@ def call(url: str, method: str = 'GET', body=None, raw: bytes | None = None,
         return json.load(res)
 
 
+_me = None
+
+
+def me() -> str:
+    """uniqueName (email) của tài khoản az đang đăng nhập — để biết comment nào là của mình."""
+    global _me
+    if _me is None:
+        _me = subprocess.check_output(['az', 'account', 'show', '--query', 'user.name', '-o', 'tsv']).decode().strip().lower()
+    return _me
+
+
 def comments(bug: int | str) -> list:
-    return call(f'{WIT}/workItems/{bug}/comments?api-version=7.1-preview.4&$top=200').get('comments', [])
+    """Comment của work item, sắp MỚI NHẤT TRƯỚC (không dựa vào thứ tự API trả)."""
+    cs = call(f'{WIT}/workItems/{bug}/comments?api-version=7.1-preview.4&$top=200').get('comments', [])
+    return sorted(cs, key=lambda c: c.get('createdDate') or '', reverse=True)
 
 
 def add_comment(bug: int | str, html: str) -> dict:
