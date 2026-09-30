@@ -7,6 +7,7 @@
 set -uo pipefail
 RUN_DIR="${RUN_DIR:-/tmp/opencode/graphify-run}"
 S="$RUN_DIR/state"
+[ -d "$S" ] || { echo "state dir không tồn tại: $S — RUN_DIR đúng chưa?"; exit 1; }
 
 # Chỉ tính file state BẰNG NỘI DUNG (OK|/FAIL|), không đếm theo tên — file marker
 # mốc giai đoạn cũng mang đuôi .done nên đếm theo tên sẽ hỏng số liệu.

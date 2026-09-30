@@ -3,17 +3,35 @@
 # lại an toàn (idempotent), và luôn ghi state file để monitor đọc nội dung.
 #
 # Dùng:  scripts/merge-cluster.sh <path> [<path> ...]
-# Env:    RUN_DIR (default /tmp/opencode/graphify-run)
+# Env:    REPO  (default: suy ra từ vị trí script)
+#         RUN_DIR (default /tmp/opencode/graphify-run)
 #         SKIP_MERGE=1 / SKIP_CLUSTER=1
 set -uo pipefail
 
-REPO="${REPO:-/home/quacn/Projects/VietBank/Utop.VietBank.CRM}"
+# Suy ra REPO từ vị trí script, KHÔNG hardcode: xem extract-all.sh giải thích.
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO="${REPO:-$(cd -- "$SCRIPT_DIR/../../../.." && pwd -P)}"
 RUN_DIR="${RUN_DIR:-/tmp/opencode/graphify-run}"
 MERGED="graphify-out/monorepo-graph.json"
 
 [ $# -gt 0 ] || { echo "usage: $0 <path> [<path> ...]" >&2; exit 2; }
+[ -e "$REPO/.git" ] || {
+  echo "FAIL: REPO không phải git repo: $REPO — đặt REPO=/đường/dẫn/đúng" >&2
+  exit 2
+}
 mkdir -p "$RUN_DIR/state"
 cd "$REPO" || exit 1
+
+# Marker của chính lần chạy này phải bị xoá TRƯỚC khi làm việc, nếu không
+# monitor.sh sẽ thấy PIPELINE.marker/MERGE.marker cũ và báo "đã xong" trong khi
+# run mới còn đang chạy. Chỉ xoá phần sắp làm lại, để SKIP_MERGE/SKIP_CLUSTER
+# vẫn giữ được kết quả của lần chạy trước.
+rm -f "$RUN_DIR/state/PIPELINE.marker" "$RUN_DIR/state/MERGE.collisions"
+[ "${SKIP_MERGE:-0}" = "1" ] \
+  || rm -f "$RUN_DIR/state/MERGE.marker" "$RUN_DIR/state/MERGE.fail"
+[ "${SKIP_CLUSTER:-0}" = "1" ] \
+  || rm -f "$RUN_DIR/state/CLUSTER.marker" "$RUN_DIR/state/CLUSTER.fail" \
+            "$RUN_DIR/state/CLUSTER.started"
 
 PY=$(cat graphify-out/.graphify_python 2>/dev/null || echo python3)
 
@@ -53,7 +71,7 @@ print(f'  {tot:,} node refs · {len(c):,} id duy nhất · {tot-len(c):,} sẽ b
 if dup:
     print('  top id trùng:')
     for k,v in sorted(dup.items(), key=lambda x:-x[1])[:8]: print(f'    x{v}  {k[:70]}')
-" "$@" 2>&1 | tee -a "$RUN_DIR/state/MERGE.collisions"
+" "$@" 2>&1 | tee "$RUN_DIR/state/MERGE.collisions"
 
 # --- Merge ---------------------------------------------------------------------
 if [ "${SKIP_MERGE:-0}" != "1" ]; then

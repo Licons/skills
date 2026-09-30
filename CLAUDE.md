@@ -21,3 +21,9 @@
 - Luôn sử dụng `graphify` để hiểu `codebase`.
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
+
+# Workflow
+
+- Các agent chạy song song trong việc code (nếu không conflict).
+- **Luôn** build và test ở bước cuối cùng
+- **Không** build + test liên tục để làm mất thời gian.
