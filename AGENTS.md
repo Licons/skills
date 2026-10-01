@@ -27,3 +27,4 @@ When the user types `/graphify`, use the installed graphify skill or instruction
 - Các agent chạy song song trong việc code (nếu không conflict).
 - **Luôn** build và test ở bước cuối cùng
 - **Không** build + test liên tục để làm mất thời gian.
+- **Không** dùng skill `ship` để tạo PR. Description mô tả ngắn gọn, đúng trọng tâm, dưới 4000 chữ.
