@@ -8,6 +8,8 @@ DESTINATIONS=(
 )
 
 cp -v CLAUDE.md $HOME/.claude
+cp -v settings.json $HOME/.claude
+
 for DEST in "${DESTINATIONS[@]}"; do
     mkdir -p $DEST
     cp -v $AGENT_FILE $DEST
