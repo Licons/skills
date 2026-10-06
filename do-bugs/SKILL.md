@@ -168,7 +168,7 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 
 ```html
 <strong>Root Cause</strong>: mô tả ngắn gọn (file/luật/đo được gì)
-<br><strong>Fix</strong>: nhánh <code>fix/ado-…</code> — <code>&lt;commit&gt;</code> · <code>&lt;commit&gt;</code>
+<br><strong>PR</strong>: link PR trên ADO
 <br><strong>Verify</strong>: stack local (DB local, tài khoản <code>ho</code>), Chrome, dd/mm/yyyy.
 <br><img src="<url attachment>" />
 ```

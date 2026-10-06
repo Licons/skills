@@ -1,6 +1,6 @@
 ---
 name: run-graphify
-description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools."
+description: "Build or refresh the monorepo knowledge graph (graphify-out/graph.json): extract 22 backend/frontend paths in parallel, merge, then cluster. Use when the graph is missing or stale, or the user types /run-graphify. For questions about the code, use the graphify skill."
 ---
 
 > Tạo Todo/Monitor để thực hiện tất cả công việc trong Workflow sau.
@@ -21,15 +21,14 @@ description: "Use for any question about a codebase, its architecture, file rela
 ## Script (đã kiểm chứng, dùng thay vì gõ tay)
 
 ```bash
-# REPO được SUY RA từ vị trí script ⇒ chạy đúng clone nào chứa script đó.
-# Chạy tay (đọc .csproj, đếm path, xem log) thì đặt REPO=/TUONG-DUONG:
-REPO="$PWD"
-CONCURRENCY=2 WORKERS=3 RUN_DIR=/tmp/opencode/graphify-run-dev \
-  setsid nohup .claude/skills/run-graphify/scripts/extract-all.sh <path>... &
+# Script nằm ở ~/.claude/skills (NGOÀI repo) ⇒ tự suy ra REPO=/home/quacn rồi
+# exit 2. PHẢI truyền REPO tường minh (chạy từ gốc clone cần build graph):
+REPO="$PWD" CONCURRENCY=2 WORKERS=3 RUN_DIR=/tmp/opencode/graphify-run-dev \
+  setsid nohup ~/.claude/skills/run-graphify/scripts/extract-all.sh <path>... &
 RUN_DIR=/tmp/opencode/graphify-run-dev \
-  .claude/skills/run-graphify/scripts/monitor.sh              # đọc state file
-RUN_DIR=/tmp/opencode/graphify-run-dev \
-  setsid nohup .claude/skills/run-graphify/scripts/merge-cluster.sh <22 path> &
+  ~/.claude/skills/run-graphify/scripts/monitor.sh              # đọc state file
+REPO="$PWD" RUN_DIR=/tmp/opencode/graphify-run-dev \
+  setsid nohup ~/.claude/skills/run-graphify/scripts/merge-cluster.sh <22 path> &
 ```
 
 `CONCURRENCY` × `WORKERS` = tổng process, nên đặt bằng `nproc`. Xếp các path
