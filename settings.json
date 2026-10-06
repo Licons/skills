@@ -2,13 +2,7 @@
   "env": {
     "DISABLE_TELEMETRY": "1",
     "DISABLE_ERROR_REPORTING": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "ANTHROPIC_BASE_URL": "http://127.0.0.1:20128/v1",
-    "ANTHROPIC_AUTH_TOKEN": "sk-3e5f59d22ff6a0c8-kk0mwl-ebac72e3",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "cx/gpt-5.6-terra[1m]",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "cx/gpt-5.6-terra[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "cx/gpt-5.6-terra[1m]",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "cx/gpt-5.6-terra[1m]"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "permissions": {
     "allow": [
@@ -24,6 +18,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus",
   "fallbackModel": [
     "sonnet"
   ],
@@ -46,7 +41,7 @@
   "timeFormat": "24-hour",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
-  "verbose": true,
+  "verbose": false,
   "switchModelsOnFlag": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
@@ -78,6 +73,8 @@
       "**Org-specific CLIs**: None configured"
     ]
   },
-  "hasCompletedOnboarding": true,
-  "model": "cx/gpt-5.6-terra[1m]"
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/quacn/.claude/ponytail-statusline.sh\""
+  }
 }

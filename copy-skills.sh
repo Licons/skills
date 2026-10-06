@@ -9,13 +9,13 @@ SKILLS=(
   do-e2e
   do-chrome
   do-bugs
-  run-graphify
+  #run-graphify
 )
 
 DESTINATIONS=(
   "../VietBank/Utop.VietBank.CRM"
-  "../VietBank/Utop.VietBank.CRM.1"
-  "../VietBank/Utop.VietBank.CRM.2"
+  #"../VietBank/Utop.VietBank.CRM.1"
+  #"../VietBank/Utop.VietBank.CRM.2"
 )
 
 for DEST in "${DESTINATIONS[@]}"; do
