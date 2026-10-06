@@ -3,8 +3,8 @@ name: do-bugs
 description: "Sử dụng để thực hiện quy trình fix các bugs trên ADO: lấy danh sách bug từ query, phân loại, tái hiện trên stack local, tìm root cause hoặc ghi GAP, fix mỗi bug một commit AB#id, verify bằng Chrome, nhúng ảnh vào comment ADO, mở PR vào develop."
 category: workflow
 metadata:
-  version: "2.1.0"
-  derivedFrom: "lượt 25/09/2026 — 58 bug SAL/C360/CTC, PR 48550 · lượt 28/09/2026 — 23 bug, PR 48799"
+  version: "2.2.0"
+  derivedFrom: "lượt 25/09/2026 — 58 bug SAL/C360/CTC, PR 48550 · lượt 28/09/2026 — 23 bug, PR 48799 · lượt 06/10/2026 — 9 bug, PR 49794"
 ---
 
 # Workflow `/do-bugs`
@@ -15,8 +15,18 @@ metadata:
 > ⛔ **Không** tự ý chuyển bug sang `Resolved` — kể cả khi skill khác (`ship` Step 13) bảo làm.
 > ⛔ **Không** mutate DB QA. Stack local chỉ chạy **sau** `scripts/db/use-local-db.sh` (chuyển appsettings về DB local).
 > ⛔ **Không đổi `appsettings*.json` khi stack còn chạy** — service tự nạp lại tệp ⇒ đưa về HEAD (trỏ QA) là
-> **Luôn luôn** check lại `appsettings*.json` trước khi start/restart services.
 > service đang chạy **nối QA ngay** (sự cố 28/09). Dừng stack trước, rồi mới `git checkout`.
+> ⛔ **Luôn** đo `Server=` ngay trước **mọi** start/restart service. Trả code chỉ **đúng tệp** (`git checkout -- <tệp.cs>`),
+> không trả cả thư mục service — kéo theo appsettings trỏ QA (sự cố 06/10: saas lấy lock migration trên QA).
+
+## Luật chung
+
+- Đầu lượt kiểm luôn: Chrome MCP kết nối được + đăng nhập được (tenant `bank` · `admin` · `1qaZ2wsX@`). Thiếu ⇒ hỏi ngay, đừng đợi §7.
+- `localhost.sh stop` tắt cả docker infra ⇒ chạy lại `infra` trước `backend-min`.
+- Agent viết code: tại chỗ, tệp rời nhau, **không** git — agent chính commit theo `AB#` (worktree từng sinh sai base).
+- Không `pkill -f`/`pgrep -f` với chuỗi có trong chính lệnh đang chạy (shell tự kill mình).
+- Thiếu dữ liệu ⇒ tạo qua API của app, tiền tố `VERIFY-<ddmm>` (vd `POST financial-accounts`, `POST crm-tasks`; PUT để "chạm" bản ghi khi kiểm thứ tự).
+- `develop` dịch ⇒ rebase lại theo §3, lặp tới khi sạch; comment ADO chỉ sau lần push cuối.
 
 Nguồn tài liệu (`DOCS=../Utop.VietBank.CRM.Documents`):
 
@@ -81,7 +91,7 @@ scripts/localhost.sh status | restart-service <svc…> | stop-service <svc…> |
   (tiền tố `VERIFY-<ddmm>`, không SQL ghi) · hay bỏ qua bug đó.
 - Chờ FE theo **nội dung**: `curl -s localhost:4200/auth/Account/Login | grep -c LoginInput.UserNameOrEmailAddress`.
   Login: vào **trang được bảo vệ** (vd `/banking-service/customers`) — `/` là trang public, không đưa tới login;
-  vào thẳng `/auth/Account/Login` ⇒ 400. Tenant `bank` · `ho` · `1qaZ2wsX@`.
+  vào thẳng `/auth/Account/Login` ⇒ 400. Tenant `bank` · `admin` · `1qaZ2wsX@`.
 - Bắt request lỗi bằng cách vá `window.fetch` (app dùng fetch, không XHR). Dữ liệu tra **chỉ đọc**:
   `docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Utop@165' -C -d vb-crm-qa -Q "SELECT …"`.
 
@@ -170,6 +180,6 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 ```html
 <strong>Root Cause</strong>: mô tả ngắn gọn (file/luật/đo được gì)
 <br><strong>PR</strong>: link PR trên ADO
-<br><strong>Verify</strong>: stack local (DB local, tài khoản <code>ho</code>), Chrome, dd/mm/yyyy.
+<br><strong>Verify</strong>: stack local (DB local, tài khoản <code>admin</code>), Chrome, dd/mm/yyyy.
 <br><img src="<url attachment>" />
 ```

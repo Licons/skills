@@ -7,7 +7,7 @@ Spec JSON: { "<id>": { "rc": "<html>", "shots": ["a.png"], "verify": "<html, tu�
   - fix=false: bỏ dòng Fix (bug không có commit trong nhánh — đã fix trước / DATA / không phải bug).
   - level (BẮT BUỘC): "runtime" = đã chạy thật trên stack · "code" = CHỈ đọc code ⇒ Verify mở đầu bằng
     dấu hiệu "chỉ đọc code" để lượt sau `ado-dump-bugs.py` xếp bug vào triage `reverify`.
-  - verify mặc định: "stack local (DB local, tài khoản ho), <--browser>, <ngày>."
+  - verify mặc định: "stack local (DB local, tài khoản admin), <--browser>, <ngày>."
   - fix=true mà commit CHƯA có trên origin/<nhánh> ⇒ dừng: hash ghi trong comment sẽ đổi nếu còn rebase.
     Push trước (hoặc --allow-unpushed nếu chắc chắn không rebase nữa).
 
@@ -75,7 +75,7 @@ for bug in ids:
         if not verify.startswith('<b>chỉ đọc code</b>'):
             verify = f'<b>chỉ đọc code</b> (chưa tái hiện trên stack) — {verify}'
     else:
-        verify = item.get('verify', f'stack local (DB local, tài khoản <code>ho</code>), {a.browser}, {a.date}.')
+        verify = item.get('verify', f'stack local (DB local, tài khoản <code>admin</code>), {a.browser}, {a.date}.')
     imgs = ''
     for shot in item.get('shots', []):
         path = os.path.join(a.shots, shot)
