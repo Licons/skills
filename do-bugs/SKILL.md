@@ -15,6 +15,7 @@ metadata:
 > ⛔ **Không** tự ý chuyển bug sang `Resolved` — kể cả khi skill khác (`ship` Step 13) bảo làm.
 > ⛔ **Không** mutate DB QA. Stack local chỉ chạy **sau** `scripts/db/use-local-db.sh` (chuyển appsettings về DB local).
 > ⛔ **Không đổi `appsettings*.json` khi stack còn chạy** — service tự nạp lại tệp ⇒ đưa về HEAD (trỏ QA) là
+> **Luôn luôn** check lại `appsettings*.json` trước khi start/restart services.
 > service đang chạy **nối QA ngay** (sự cố 28/09). Dừng stack trước, rồi mới `git checkout`.
 
 Nguồn tài liệu (`DOCS=../Utop.VietBank.CRM.Documents`):
