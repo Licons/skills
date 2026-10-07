@@ -27,6 +27,6 @@ When the user types `/graphify`, use the installed graphify skill or instruction
 - Các agent chạy song song trong việc code (nếu không conflict).
 - **Luôn** build và test ở bước cuối cùng
 - **Không** build + test liên tục để làm mất thời gian.
-- **Không** dùng skill `ship` để tạo PR. Description mô tả ngắn gọn, đúng trọng tâm, dưới 4000 chữ.
+- **Không** dùng skill `ship` để tạo PR.  Dùng `az cli` và description mô tả ngắn gọn, đúng trọng tâm, dưới 4000 chữ.
 - **Không** test full, chỉ test những thứ thay đổi.
-- **Agents** đóng trang Chrome sau khi sử dụng xong.
+- **Agents** đóng ứng dụng Chrome sau khi sử dụng xong.

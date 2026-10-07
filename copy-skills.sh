@@ -14,7 +14,7 @@ SKILLS=(
 
 DESTINATIONS=(
   "../VietBank/Utop.VietBank.CRM"
-  #"../VietBank/Utop.VietBank.CRM.1"
+  "../VietBank/Utop.VietBank.CRM.1"
   #"../VietBank/Utop.VietBank.CRM.2"
 )
 
