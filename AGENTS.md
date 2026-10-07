@@ -7,7 +7,7 @@
     - Role `SA` · user `admin` · password `1qaZ2wsX@`.
     - Role `Trưởng phòng` · user `ha@vietbank.com` · password `123456`.
     - Role `CVKD` · user `ky@vietbank.com` · password `123456`.
-    
+
 # Ngôn ngữ
 
 - Luôn giao tiếp với user bằng *Tiếng Việt*.
@@ -33,4 +33,5 @@ When the user types `/graphify`, use the installed graphify skill or instruction
 - **Không** build + test liên tục để làm mất thời gian.
 - **Không** dùng skill `ship` để tạo PR. Dùng `az cli` và description mô tả ngắn gọn, đúng trọng tâm, dưới 4000 chữ.
 - **Không** test full, chỉ test những thứ thay đổi.
+- **Luôn luôn** mở ứng dụng Chrome ở 1920 để `verify` trước, rồi `verfiy responsive` ở các màn hình khác sau.
 - **Agents** đóng ứng dụng Chrome sau khi sử dụng xong.
