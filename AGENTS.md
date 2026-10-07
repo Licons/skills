@@ -22,7 +22,7 @@
 
 # graphify
 
-- Luôn sử dụng `graphify` để hiểu `codebase`.
+- Luôn sử dụng `graphify query` để hiểu `codebase`.
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
 
