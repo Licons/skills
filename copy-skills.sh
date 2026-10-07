@@ -24,7 +24,7 @@ for DEST in "${DESTINATIONS[@]}"; do
 
 tee $DEST/apps/angular/e2e-playwright/.env > /dev/null <<EOF
 PW_TENANT=bank
-PW_USER=ho
+PW_USER=admin
 PW_PASSWORD=1qaZ2wsX@
 PW_CLIENT_ID=AngularDev
 PW_HOST_ADMIN_USER=admin
