@@ -1,20 +1,10 @@
 {
   "env": {
-    "DISABLE_TELEMETRY": 1,
-    "DISABLE_ERROR_REPORTING": 1,
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
-  "model": "opus",
-  "fallbackModel": [
-    "sonnet"
-  ],
-  "timeFormat": "24-hour",
-  "theme": "dark",
-  "verbose": true,
-  "switchModelsOnFlag": true,
-  "inputNeededNotifEnabled": true,
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "mcp__chrome-devtools__evaluate_script",
       "Bash(docker:*)",
@@ -25,8 +15,36 @@
       "Bash(az boards work-item create:*)",
       "Bash(az repos pr create:*)",
       "Bash(az repos pr work-item add:*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
+  "model": "opus",
+  "fallbackModel": [
+    "sonnet"
+  ],
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "timeFormat": "24-hour",
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "verbose": false,
+  "switchModelsOnFlag": true,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "autoMode": {
     "environment": [
       "### Org-wide",
@@ -55,5 +73,8 @@
       "**Org-specific CLIs**: None configured"
     ]
   },
-  "agentPushNotifEnabled": true
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/quacn/.claude/ponytail-statusline.sh\""
+  }
 }
