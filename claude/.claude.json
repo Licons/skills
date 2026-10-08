@@ -5,9 +5,16 @@
   "tipsHistory": {
     "artifact-publish-plan": 2,
     "new-user-warmup": 2,
-    "auto-copy-config-hint": 2
+    "auto-copy-config-hint": 2,
+    "plan-mode-for-complex-tasks": 2,
+    "memory-command": 2,
+    "theme-command": 2,
+    "prompt-queue": 2,
+    "enter-to-steer-in-relatime": 2,
+    "install-github-app": 2,
+    "install-slack-app": 2
   },
-  "promptQueueUseCount": 1,
+  "promptQueueUseCount": 2,
   "cachedGrowthBookFeatures": {
     "tengu_mcp_local_oauth_blocked_hosts": {
       "hosts": [
@@ -1514,8 +1521,8 @@
       "lastUsedNumStartups": 1
     },
     "ponytail@ponytail": {
-      "usageCount": 2,
-      "lastUsedAt": 1791431750096,
+      "usageCount": 9,
+      "lastUsedAt": 1791432542639,
       "lastUsedNumStartups": 2
     }
   },
@@ -1560,9 +1567,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "chrome-devtools-mcp@latest",
-        "--viewport",
-        "1920x1080"
+        "chrome-devtools-mcp@latest"
       ],
       "env": {}
     }
@@ -1570,6 +1575,28 @@
   "tipLifetimeShownCounts": {
     "artifact-publish-plan": 1,
     "new-user-warmup": 1,
-    "auto-copy-config-hint": 1
-  }
+    "auto-copy-config-hint": 1,
+    "plan-mode-for-complex-tasks": 1,
+    "memory-command": 1,
+    "theme-command": 1,
+    "prompt-queue": 1,
+    "enter-to-steer-in-relatime": 1,
+    "install-github-app": 1,
+    "install-slack-app": 1
+  },
+  "tipsHistoryByCommand": {
+    "memory": {
+      "tipId": "memory-command",
+      "numStartups": 2
+    },
+    "install-github-app": {
+      "tipId": "install-github-app",
+      "numStartups": 2
+    },
+    "install-slack-app": {
+      "tipId": "install-slack-app",
+      "numStartups": 2
+    }
+  },
+  "hasSeenAutoModeOutsideReadPrompt": true
 }

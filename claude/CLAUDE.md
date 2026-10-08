@@ -35,3 +35,16 @@ When the user types `/graphify`, use the installed graphify skill or instruction
 - **Không** test full, chỉ test những thứ thay đổi.
 - **Luôn luôn** mở ứng dụng Chrome ở 1920 để `verify` trước, rồi `verfiy responsive` ở các màn hình khác sau.
 - **Agents** đóng ứng dụng Chrome sau khi sử dụng xong.
+
+# Chrome MCP (máy niri — Wayland tiling, màn 1920x1080)
+
+- `~/.config/niri/config.kdl` có window-rule `open-maximized-to-edges` cho `google-chrome` + `firefox` ⇒ Chrome MCP **tự mở 1920** (innerWidth 1920).
+- ⛔ **Không** thêm `--viewport` cho chrome-devtools-mcp — cửa sổ đã maximize thì MCP lỗi `Browser.setContentsSize: Restore window to normal state` ở **mọi** lệnh. `resize_page` cũng vô dụng (niri quyết định kích thước).
+- Dự phòng — **chỉ khi** đo `innerWidth` < 1920: maximize theo id (⚠️ lệnh là **toggle**, chạy khi đã maximize là bỏ maximize):
+  ```bash
+  pid=$(pgrep -f '^/opt/google/chrome/chrome .*chrome-devtools-mcp/chrome-profile' | head -1)
+  id=$(niri msg -j windows | python3 -c "import json,sys;print(next(w['id'] for w in json.load(sys.stdin) if w.get('pid')==$pid))")
+  niri msg action maximize-window-to-edges --id $id
+  ```
+- **Responsive**: `mcp__chrome-devtools__emulate` `viewport: "1366x768x1"` / `"390x844x3,mobile,touch"` (trang mới phải emulate lại).
+- **Đóng Chrome MCP**: `pkill -f '^/opt/google/chrome/chrome.*chrome-devtools-mcp/chrome-profile'` (neo `^`, không thì pkill tự giết shell của nó).
