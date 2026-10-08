@@ -67,6 +67,7 @@ PW_OUT=<scratch> PW_STATE=<scratch>/pw-state-<tên-agent>.json node <S>/pw-run.m
 
 ```text
 PHẢI trả đủ MỌI id được giao — id nào không làm được thì vẫn trả, verdict "KHÔNG TÁI HIỆN ĐƯỢC" + lý do.
+Ghi TOÀN BỘ JSON ra <scratch>/analysis-<tên>.json (tin nhắn trả về bị cắt khi dài) và kiểm json.load đọc lại được.
 ```
 Tiền lệ: agent SAL trả 3/4 bug, **bỏ im** 140810. Agent chính luôn đối chiếu `set(ids giao) == set(ids trả)`.
 

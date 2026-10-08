@@ -67,7 +67,8 @@ Mỗi bug: đọc dump (kể cả ảnh khi text không đủ) → URD/design **
 ⛔ Trước khi coi thứ gì là "thiếu so với AC": `git log -S` xem nó có bị **cố ý gỡ** không, **đọc mô tả PR**
 (`git log -1 --format=%B <hash>`) ⇒ nếu có thì là `CONFLICT`/cố ý, hỏi, không tự đảo.
 Giao agent: dùng **`references/verify-agent.md`** (luật · tin nhắn giữa lượt · tiền đề dữ liệu · schema bắt trả
-**đủ mọi id**). Nhận kết quả: so `set(id giao) == set(id trả)`; verdict `SAI` ⇒ 2 skeptic trước khi sửa.
+**đủ mọi id**, ghi JSON ra `<scratch>/analysis-<nhóm>.json` — kết quả qua tin nhắn bị cắt khi dài). Nhận kết quả:
+so `set(id giao) == set(id trả)`; verdict `SAI` ⇒ 2 skeptic trước khi sửa.
 
 ## 3. Tái hiện trên stack local — TRƯỚC khi chốt root cause
 Đọc tĩnh sai ≥5/58 bug lượt 25/09 và 1/9 lượt 28/09 (xem `references/bay.md`). Dùng script **có sẵn** của repo:
@@ -93,7 +94,8 @@ scripts/localhost.sh status | restart-service <svc…> | stop-service <svc…> |
   Login: vào **trang được bảo vệ** (vd `/banking-service/customers`) — `/` là trang public, không đưa tới login;
   vào thẳng `/auth/Account/Login` ⇒ 400. Tenant `bank` · `admin` · `1qaZ2wsX@`.
 - Bắt request lỗi bằng cách vá `window.fetch` (app dùng fetch, không XHR). Dữ liệu tra **chỉ đọc**:
-  `docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Utop@165' -C -d vb-crm-qa -Q "SELECT …"`.
+  `docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Utop@165' -C -d <DB> -Q "SELECT …"` —
+  `<DB>` lấy từ `Database=` của appsettings **sau** `use-local-db.sh` (tên đổi theo bản dump, đừng ghim).
 
 ## 4. Chốt với người dùng
 - `python3 $S/ado-set-state.py --state "In Progress" <id…>` cho bug có root cause — **kể cả bug `reverify`**
@@ -114,6 +116,16 @@ scripts/localhost.sh status | restart-service <svc…> | stop-service <svc…> |
   đổi thụt lề), `json.loads` lại để kiểm; rồi `scripts/localhost.sh restart-service saas administration`
   (JSON là embedded resource — kiểm `grep -qa <khoá> …/bin/Debug/net10.0/FPTCXSuite.SaasService.Contracts.dll`).
 - Thêm khoá ở thư mục FE mới ⇒ kiểm `PAGES` của `scripts/gates/lom-i18n-keys-resolve.mjs` có phủ không.
+- **Agent viết code song song**: chia theo tệp rời nhau (`<scratch>/coder-common.md` làm luật chung). Mỗi bug một
+  lượt: agent ghi `<scratch>/done/<id>.md` (tệp · ca kiểm · cách thấy đỏ) rồi dừng; agent chính commit rồi nhắn «tiếp».
+  Agent **không** sửa `vi/en.json` — ghi `<scratch>/keys/<id>.json`, agent chính áp bằng `$S/apply-keys.py`.
+  Một tệp mang thay đổi của nhiều bug ⇒ `$S/stage-hunks.py <tệp> <chuỗi>` để commit đúng hunk.
+- Agent không build ⇒ trước khi dùng namespace/gói mới phải kiểm `csproj` có tham chiếu; agent chính duyệt diff
+  từng bug trước khi commit (biến thừa, chú thích sai sự thật, khối chết).
+- Sửa một luật ⇒ đặt ở **hàm dùng chung** và rà mọi đường gọi cùng luật (tiền-kiểm FE qua endpoint khác, nhập tệp,
+  job). Thêm/đọc một trường ⇒ grep mọi nơi đọc/ghi cùng khái niệm — một trường hai nguồn là lỗi (Rule 7).
+- Họ lỗi lặp (chữ tiếng Anh, mã thông báo, mã lỗi thiếu bản dịch…) lộ ra khi verify ⇒ đo cả họ bằng grep, hỏi
+  người dùng một lần, sửa trong commit riêng không gắn `AB#`.
 
 ## 6. Kiểm — sau mỗi nhóm
 ```bash
@@ -125,6 +137,10 @@ node scripts/gates/localization-json-valid.mjs && node scripts/gates/lom-i18n-ke
 node scripts/gates/error-code-i18n.mjs                 # LeadOpp đỏ sẵn 3 mã (nợ cũ) — chỉ xét khối mình đụng
 node scripts/gates/css-token-declared.mjs && node scripts/compute-trigger-paths.js --check
 ```
+- **Phép thử đỏ gộp**: tạm gỡ nhiều fix trong một lượt build, chạy đúng các ca, rồi `git checkout -- <tệp>`. Ca vẫn
+  xanh khi gỡ fix ⇒ ca không canh được gì, viết lại.
+- Ca đỏ trong phạm vi chạy (kể cả nợ cũ, kể cả «flaky») ⇒ tìm gốc trước khi gọi là flaky; sửa, **commit riêng**.
+- Máy ~16 GB: tắt `yarn dev` trước build/test; không build khi còn nhiều agent + Chrome đang chạy.
 
 ## 7. Verify trên trình duyệt + ảnh
 **Chọn trình duyệt — theo thứ tự, hỏi trước khi hạ cấp:**
@@ -142,10 +158,14 @@ node scripts/gates/css-token-declared.mjs && node scripts/compute-trigger-paths.
 - Không có dữ liệu cho nhánh cần kiểm (vd user phạm vi hẹp) mà phải **mô phỏng** (sửa response) ⇒ ghi rõ trong
   Verify: cái gì thật, cái gì mô phỏng, số lấy từ đâu.
 - Toast: dò `.abp-toast-message` rồi chụp ngay (tắt sau ~5s). Đọc console tìm `NG0103|NG0100` sau mỗi màn.
+- Agent verify song song: mỗi agent một `isolatedContext` của Chrome MCP, xong thì `close_page`; agent chính đóng
+  Chrome cuối lượt. Chụp ảnh treo ⇒ cửa sổ mất focus (`references/bay.md`).
+- Sau review/verify có vá thêm ⇒ verify lại đúng phần vá trước khi comment.
 - Lộ lỗi mới khi verify ⇒ sửa ngay, commit riêng gắn đúng `AB#<id>`.
 
 ## 8. Comment ADO — **sau khi push** (hash đổi nếu còn rebase)
-Spec JSON `{ "<id>": {"rc": "<html>", "shots": ["<id>.png"], "fix": true, "level": "runtime"|"code", "verify": "<tuỳ chọn>"} }`:
+Spec JSON `{ "<id>": {"rc": "<html>", "shots": ["<id>.png"], "fix": true, "level": "runtime"|"code", "verify": "<tuỳ chọn>"} }`
+— bug GAP: `"gap": "<html theo Template GAP>"` thay cho `rc`:
 
 ```bash
 python3 $S/ado-post-comments.py --spec spec.json --shots <scratch>/shots --branch <nhánh> --date dd/mm/yyyy [--browser "Playwright headless"] --dry-run
@@ -155,13 +175,19 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 ```
 - `level` **bắt buộc**: `code` ⇒ Verify tự mở đầu `chỉ đọc code` ⇒ lượt sau vào triage `reverify`. Script
   **từ chối** đăng khi commit của `fix: true` chưa có trên `origin/<nhánh>`.
-- Nhóm BUG / ĐÃ FIX / DATA / KHÔNG PHẢI BUG ⇒ comment theo template. Nhóm GAP ⇒ **chỉ** file `docs/uc-gaps/`
-  (5 phần theo `.claude/rules/implementation-gap.md`), không comment ADO.
+- Nhóm BUG / ĐÃ FIX / DATA / KHÔNG PHẢI BUG ⇒ comment theo template. Nhóm GAP ⇒ file `docs/uc-gaps/` (5 phần
+  theo `.claude/rules/implementation-gap.md`, bản gốc) **và** comment câu hỏi lên ADO theo *Template GAP* — cho người
+  dùng duyệt bản nháp trước khi đăng; luôn có dòng Verify để lượt sau triage `wait-qa`.
+- Câu chữ comment viết cho BA/QA đọc: lời thường, kết luận trước, có dẫn chứng (mã đầy đủ + nguyên văn trọn câu +
+  số đo/ảnh), không thuật ngữ nội bộ trơ trọi.
 - Sửa comment cũ (bug `reverify`) thay vì đăng mới khi verdict không đổi — trừ khi người dùng muốn QA được báo.
 
 ## 9. PR vào develop
 - Review đối kháng trước PR (reviewer theo vùng + 2 skeptic độc lập mỗi phát hiện), sửa phát hiện được xác nhận.
-- `git fetch` — develop dịch ⇒ rebase (theo §3) **trước** khi push/comment. Push → comment (§8) → PR:
+- Soát `git log --oneline origin/develop..HEAD` — phiên khác dùng chung working tree có thể commit vào nhánh ⇒ hỏi
+  người dùng giữ hay tách, ghi rõ trong mô tả PR.
+- `git fetch` — develop dịch ⇒ rebase (theo §3) **trước** khi push/comment, rồi chạy lại test phần đổi +
+  `fe-verify.sh`; develop đỏ sẵn ⇒ sửa trong commit riêng. Push → comment (§8) → PR:
   `az repos pr create --source-branch <nhánh> --target-branch develop --title "fix: …" --description @body.md
   --work-items <id…>` — mô tả ≤ 3000 ký tự. **Không** chạy bước chuyển Resolved của skill `ship`.
 - `--work-items` = **mọi bug đã fix + đã comment + có ảnh trong lượt** — kể cả bug `ĐÃ FIX` từ trước chỉ verify
@@ -183,3 +209,26 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 <br><strong>Verify</strong>: stack local (DB local, tài khoản <code>admin</code>), Chrome, dd/mm/yyyy.
 <br><img src="<url attachment>" />
 ```
+
+# Template GAP (câu hỏi BA)
+
+Đăng bằng `ado-post-comments.py` với `"gap": "<html>"` thay cho `rc` (script tự nối dòng Verify + ảnh, không có Fix).
+Người đọc là BA/QA — viết để họ trả lời được ngay, không phải đọc code.
+
+```html
+<strong>Kết luận</strong>: 1–2 câu, lời thường: đây là lỗi, hay URD thiếu / hai nguồn đá nhau — và cần ai chốt.
+<br><strong>Vì sao</strong>: cơ chế bằng ngôn ngữ nghiệp vụ («người phụ trách không xem được…»), không tên bảng/cờ/enum.
+<br><strong>Căn cứ</strong>:<ul>
+<li><code>&lt;UC&gt;-&lt;BR|AC&gt;-&lt;số&gt;</code>: <i>«nguyên văn trọn câu»</i></li>
+<li>design / spec: <i>«nguyên văn»</i> (ghi rõ nguồn: tên tệp, mã màn)</li>
+<li>số đo đã đo (DB chỉ đọc / runtime) — một câu, kèm ý nghĩa của con số</li></ul>
+<strong>Cần BA chốt</strong>: một câu hỏi trả lời được bằng chọn phương án<ol>
+<li>Phương án nhóm phát triển đề xuất — <b>đề xuất</b>; nói giá sửa (nhỏ/lớn, có đụng dữ liệu không)</li>
+<li>Phương án còn lại — nói hệ quả nếu chọn nó</li></ol>
+Chi tiết: <a href="https://dev.azure.com/Loyalstar/VietBank/_git/Utop.VietBank.CRM?path=/docs/uc-gaps/&lt;tệp&gt;.md&amp;version=GB&lt;nhánh&gt;">docs/uc-gaps/&lt;tệp&gt;.md</a> mục G-…
+```
+
+- Kết luận đi trước; mỗi mục ngắn. Bug có nhiều câu hỏi ⇒ đánh số trong *Cần BA chốt*, câu trùng bug khác thì trỏ sang bug đó.
+- Căn cứ: mã đầy đủ, trích **trọn câu** (luật `implementation-gap.md` §1); URD không nói ⇒ ghi «URD không nêu…» + đã tìm ở đâu.
+- Verify (`"verify"` của spec): chỉ ghi điều **đã đo/tái hiện**; điều mới đọc từ code thì nói rõ, hoặc bỏ.
+- Gửi người dùng duyệt bản nháp (dạng đọc được, không HTML thô) → `--dry-run` → đăng. Bug chỉ có GAP giữ `To Do`.

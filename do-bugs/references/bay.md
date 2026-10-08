@@ -37,6 +37,9 @@ Mỗi dòng là một lần sai **có thật**, kèm cách chặn. Đọc trư�
 |---|---|
 | Tin nhắn người dùng gửi giữa lượt **được chuyển tới agent** — "anh chạy … rồi nhé" (= đã làm xong) bị đọc thành lệnh ⇒ agent từ chối rồi **bỏ nhiệm vụ** | `references/verify-agent.md` §3 |
 | Agent **bỏ im** một bug được giao (140810) | schema bắt trả đủ id; agent chính so `set(giao) == set(trả)` |
+| Kết quả agent trả qua tin nhắn **bị cắt** giữa chừng | agent ghi JSON ra tệp trong scratch, agent chính đọc tệp |
+| Nhiều agent cùng sửa `vi/en.json` / một tệp ⇒ không tách được commit theo bug | khoá dịch qua `keys/<id>.json` + `apply-keys.py`; hunk qua `stage-hunks.py` |
+| Phiên Claude khác commit vào **nhánh đang làm** (dùng chung working tree) | soát `git log origin/develop..HEAD` trước push/PR, hỏi người dùng |
 
 ## Code / test
 
@@ -46,6 +49,10 @@ Mỗi dòng là một lần sai **có thật**, kèm cách chặn. Đọc trư�
 | Sửa `vi.json` bằng `json.load` → `json.dump` ⇒ đổi thụt lề cả tệp (diff 18k dòng) | chèn **đúng một dòng** bằng thao tác chuỗi cạnh khoá có sẵn, rồi `json.loads` lại để kiểm |
 | Heredoc bash **không nháy** biến `'\n'` thành xuống dòng thật ⇒ vỡ build (140753) | viết code bằng Python/`<<'EOF'`; build FE sau mỗi lô |
 | Ca kiểm xanh giả: dùng Email (nhãn = tên thuộc tính) nên không bắt được lỗi tra nhãn (140753) | dữ liệu kiểm phải có nhãn **khác** tên kỹ thuật; tạm hoàn nguyên fix xem ca có đỏ |
+| Agent không build ⇒ dùng namespace của gói **chưa tham chiếu** ⇒ vỡ biên dịch ở lượt build cuối | kiểm `csproj` trước khi `using` gói mới |
+| Sửa luật ở một endpoint, bỏ sót đường tiền-kiểm FE / nhập tệp đi qua hàm khác | đặt luật ở hàm dùng chung; review đối kháng soát mọi đường gọi |
+| Vá triệu chứng ở chỗ đọc, gốc nằm ở helper dùng chung (vd chuyển giá trị ô sang chuỗi theo culture) | ca kiểm đỏ thật trước khi sửa; lần ngược tới nơi giá trị đổi dạng |
+| Ca «flaky» hoá ra lỗi thật (giá trị mặc định của enum trùng một trạng thái) | tìm gốc trước khi gọi là flaky |
 | Khai trùng property đã có (`MergedIntoId` trên `ContactDto`) | `grep` DTO BE trước khi thêm; FE proxy có thể chỉ thiếu ở `models.ts` |
 | ABP trả **mọi** lỗi nghiệp vụ bằng HTTP 403; FE chỉ phân biệt qua `error.code` + bản dịch `SaasService::<code>` | `UserFriendlyException(msg, code)` + khoá JSON = **nguyên mã**; dialog tự hiện lỗi ⇒ `skipHandleError` |
 | Placeholder `{X}` trong câu dịch không có ở `WithData` của mọi chỗ ném ⇒ hiện nguyên `{X}` | chỉ dùng giao các khoá `WithData`; không đưa GUID/mã enum vào câu |
@@ -61,5 +68,7 @@ Mỗi dòng là một lần sai **có thật**, kèm cách chặn. Đọc trư�
 | Bug gắn PR nhưng vẫn `To Do` (28/09: 5/9 — chỉ chuyển trạng thái cho bug **mới**, quên bug `reverify`) · gắn PR chỉ bug có commit, quên bug đã verify lại | `SKILL.md` §4 + §9: chuyển In Progress cả bug `reverify`; `az repos pr work-item list` kiểm đủ id + trạng thái |
 | Comment ghi hash commit rồi mới rebase ⇒ hash chết | push trước, comment sau (`ado-post-comments.py` chặn commit chưa push) |
 | Toast ABP tắt sau ~5s — chụp trễ là mất | dò `.abp-toast-message` mỗi 150ms rồi `take_screenshot` ngay |
+| Chrome MCP `take_screenshot` treo/timeout (máy niri) — cửa sổ mất focus nên trang không vẽ | `niri msg action focus-window --id <id>` rồi chụp lại; focus lại trước mỗi lần nếu cần |
+| Chụp khi tab/đếm còn đang tải ⇒ ảnh sai số | chờ nội dung đích (đếm, nhãn) trong `evaluate_script` rồi mới chụp |
 | App dùng **`fetch`**, không phải XHR ⇒ vá XHR không bắt được gì | vá `window.fetch` để log `{url,status,body}`; token không nằm trong storage ⇒ gọi API qua service Angular: `ng.getComponent(el).<service>.<method>(…, {skipHandleError:true})` |
 | `git stash` khi working tree có thay đổi của người khác | không stash; `git add <đúng file>`; có file lạ (vd `appsettings*.json` đổi sang local) thì báo, không commit |
