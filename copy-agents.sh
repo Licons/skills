@@ -7,6 +7,7 @@ DESTINATIONS=(
   $HOME/.config/opencode
 )
 
+cp -v .claude.json $HOME
 cp -v CLAUDE.md $HOME/.claude
 cp -v settings.json $HOME/.claude
 cp -v ponytail-statusline.sh $HOME/.claude
