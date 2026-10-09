@@ -5,8 +5,8 @@
 - Tài liệu dự án `VietBank CRM` (gồm design + URD) thì ở đây `<repo>/../Utop.VietBank.CRM.Documents/outputs/urd/Delivered/Phase 1`
 - Tài khoản test **local** `VietBank CRM`: tenant `bank`
     - Role `SA` · user `admin` · password `1qaZ2wsX@`.
-    - Role `Trưởng phòng` · user `ha@vietbank.com` · password `123456`.
-    - Role `CVKD` · user `ky@vietbank.com` · password `123456`.
+    - Role `Trưởng phòng` · user `ha@vietbank.com` · password `1qaZ2wsX@`.
+    - Role `CVKD` · user `ky@vietbank.com` · password `1qaZ2wsX@`.
 
 # Ngôn ngữ
 
