@@ -30,6 +30,7 @@ Mỗi dòng là một lần sai **có thật**, kèm cách chặn. Đọc trư�
 | Hook `scout-block` chặn lệnh bash có chữ `build` | `$S/fe-verify.sh` (đã né) |
 | Khoá dịch mới không hiện | JSON là embedded resource ⇒ `localhost.sh restart-service saas administration`; kiểm `grep -qa <khoá> …Contracts.dll` |
 | Đăng nhập thẳng `/auth/Account/Login` ⇒ 400 | vào `http://localhost:4200/` rồi mới login (luồng OIDC) |
+| DB local khôi phục từ QA ⇒ mật khẩu user test (ngan@, ky@…) không phải `123456` (09/10) | admin → `/identity/users` → Hành động → «Log in with this user»; mất khi restart service ⇒ đọc tên topbar trước khi đo (đừng dò email trong body — cột Người phụ trách cũng có) |
 
 ## Agent / workflow
 
@@ -67,8 +68,9 @@ Mỗi dòng là một lần sai **có thật**, kèm cách chặn. Đọc trư�
 | Ảnh chỉ chụp form, **không** thấy điều comment khẳng định (140963 lượt đầu) | mở ảnh ra xem trước khi nhúng; ảnh phải chứa đúng điều câu Verify nói |
 | Bug gắn PR nhưng vẫn `To Do` (28/09: 5/9 — chỉ chuyển trạng thái cho bug **mới**, quên bug `reverify`) · gắn PR chỉ bug có commit, quên bug đã verify lại | `SKILL.md` §4 + §9: chuyển In Progress cả bug `reverify`; `az repos pr work-item list` kiểm đủ id + trạng thái |
 | Comment ghi hash commit rồi mới rebase ⇒ hash chết | push trước, comment sau (`ado-post-comments.py` chặn commit chưa push) |
-| Toast ABP tắt sau ~5s — chụp trễ là mất | dò `.abp-toast-message` mỗi 150ms rồi `take_screenshot` ngay |
+| Toast ABP tắt sau ~5s — chụp trễ là mất | dò `.abp-toast-message` mỗi 150ms rồi `take_screenshot` ngay; vẫn trễ ⇒ ghi nguyên văn đo qua DOM vào Verify |
 | Chrome MCP `take_screenshot` treo/timeout (máy niri) — cửa sổ mất focus nên trang không vẽ | `niri msg action focus-window --id <id>` rồi chụp lại; focus lại trước mỗi lần nếu cần |
+| Người dùng vắng ⇒ màn tắt (DPMS) ⇒ chụp timeout ~½ số lần; cửa sổ `isolatedContext` hầu như không chụp được (09/10) | vòng nền `niri msg action power-on-monitors` mỗi 5s (nhớ `pkill`); chụp hỏng thì gọi lại ngay; làm trên cửa sổ chính |
 | Chụp khi tab/đếm còn đang tải ⇒ ảnh sai số | chờ nội dung đích (đếm, nhãn) trong `evaluate_script` rồi mới chụp |
 | App dùng **`fetch`**, không phải XHR ⇒ vá XHR không bắt được gì | vá `window.fetch` để log `{url,status,body}`; token không nằm trong storage ⇒ gọi API qua service Angular: `ng.getComponent(el).<service>.<method>(…, {skipHandleError:true})` |
 | `git stash` khi working tree có thay đổi của người khác | không stash; `git add <đúng file>`; có file lạ (vd `appsettings*.json` đổi sang local) thì báo, không commit |

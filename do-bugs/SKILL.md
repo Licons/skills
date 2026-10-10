@@ -124,6 +124,10 @@ scripts/localhost.sh status | restart-service <svc…> | stop-service <svc…> |
   từng bug trước khi commit (biến thừa, chú thích sai sự thật, khối chết).
 - Sửa một luật ⇒ đặt ở **hàm dùng chung** và rà mọi đường gọi cùng luật (tiền-kiểm FE qua endpoint khác, nhập tệp,
   job). Thêm/đọc một trường ⇒ grep mọi nơi đọc/ghi cùng khái niệm — một trường hai nguồn là lỗi (Rule 7).
+  Rà cả `new <Entity>(` — đường tạo thẳng bỏ qua manager (09/10: task gọi nhanh / cam kết sót `AccountId`).
+- Backfill dữ liệu ⇒ seeder C# `ITenantMasterSeed`, một câu set-based (`database-migrations.md`), không script SQL.
+- Agent viết test mà không chạy ⇒ tự soát: seed bản ghi cho mọi khoá ngoại · đọc lại ở UoW riêng · `TestBed` cấu hình
+  một lần mỗi ca · stub đủ hàm template gọi (`getGrantedPolicy` cho `*abpPermission`). 09/10: 8 ca đỏ lần chạy đầu vì đúng 4 lỗi này.
 - Họ lỗi lặp (chữ tiếng Anh, mã thông báo, mã lỗi thiếu bản dịch…) lộ ra khi verify ⇒ đo cả họ bằng grep, hỏi
   người dùng một lần, sửa trong commit riêng không gắn `AB#`.
 
@@ -141,6 +145,7 @@ node scripts/gates/css-token-declared.mjs && node scripts/compute-trigger-paths.
   xanh khi gỡ fix ⇒ ca không canh được gì, viết lại.
 - Ca đỏ trong phạm vi chạy (kể cả nợ cũ, kể cả «flaky») ⇒ tìm gốc trước khi gọi là flaky; sửa, **commit riêng**.
 - Máy ~16 GB: tắt `yarn dev` trước build/test; không build khi còn nhiều agent + Chrome đang chạy.
+- `git fetch` + rebase (theo §3) **trước** lượt test cuối — rebase sau khi test là phải test lại (09/10: 2 lần).
 
 ## 7. Verify trên trình duyệt + ảnh
 **Chọn trình duyệt — theo thứ tự, hỏi trước khi hạ cấp:**
@@ -175,6 +180,7 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 ```
 - `level` **bắt buộc**: `code` ⇒ Verify tự mở đầu `chỉ đọc code` ⇒ lượt sau vào triage `reverify`. Script
   **từ chối** đăng khi commit của `fix: true` chưa có trên `origin/<nhánh>`.
+- Spec viết tay ⇒ `python3 -c "import json;json.load(open('spec.json'))"` trước `--dry-run`; `"` trong câu trích phải escape.
 - Nhóm BUG / ĐÃ FIX / DATA / KHÔNG PHẢI BUG ⇒ comment theo template. Nhóm GAP ⇒ file `docs/uc-gaps/` (5 phần
   theo `.claude/rules/implementation-gap.md`, bản gốc) **và** comment câu hỏi lên ADO theo *Template GAP* — cho người
   dùng duyệt bản nháp trước khi đăng; luôn có dòng Verify để lượt sau triage `wait-qa`.
@@ -186,6 +192,7 @@ python3 $S/ado-edit-comments.py --find "<chuỗi cần bỏ>" <id…>           
 - Review đối kháng trước PR (reviewer theo vùng + 2 skeptic độc lập mỗi phát hiện), sửa phát hiện được xác nhận.
 - Soát `git log --oneline origin/develop..HEAD` — phiên khác dùng chung working tree có thể commit vào nhánh ⇒ hỏi
   người dùng giữ hay tách, ghi rõ trong mô tả PR.
+- Làm tiếp sau khi đã mở PR ⇒ `az repos pr show --id <pr> --query status` trước; `completed` ⇒ nhánh + PR mới từ develop.
 - `git fetch` — develop dịch ⇒ rebase (theo §3) **trước** khi push/comment, rồi chạy lại test phần đổi +
   `fe-verify.sh`; develop đỏ sẵn ⇒ sửa trong commit riêng. Push → comment (§8) → PR:
   `az repos pr create --source-branch <nhánh> --target-branch develop --title "fix: …" --description @body.md
